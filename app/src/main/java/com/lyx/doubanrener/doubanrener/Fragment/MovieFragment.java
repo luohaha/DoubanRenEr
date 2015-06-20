@@ -34,6 +34,10 @@ import java.util.Objects;
 public class MovieFragment extends Fragment {
 
     private static int REFRESH_FINISH = 1;
+    /**
+     * 是否向下滑动
+     * */
+    private boolean isScrollDown = false;
 
     private String mGetTop250Url = "http://api.douban.com/v2/movie/top250?start=0&count=6";
     private String mGetUsboxUrl = "http://api.douban.com/v2/movie/us_box?start=0&count=6";
@@ -44,7 +48,7 @@ public class MovieFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ProgressBarCircular progressBarCircular;
-
+    private GridLayoutManager manager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +58,9 @@ public class MovieFragment extends Fragment {
         this.mInflater = inflater;
         initPregress();
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.movie_recyclerview);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        manager = new GridLayoutManager(getActivity(), 2);
+        mRecyclerView.setLayoutManager(manager);
+        ScrollDownLoadMore();
         initSwipeRefresh();
         initView(inflater);
         progressBarCircular.setVisibility(View.VISIBLE);
@@ -171,5 +177,38 @@ public class MovieFragment extends Fragment {
                 }
             }
         };
+    }
+    /**
+     * 实现RecyclerView下拉加载更多
+     * */
+    private void ScrollDownLoadMore() {
+
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            boolean isSlideToLast = false;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int lastItem = manager.findLastCompletelyVisibleItemPosition();
+                    int totalItemtCount = manager.getItemCount();
+
+                    if (lastItem == (totalItemtCount - 1) && isScrollDown) {
+                        Toast.makeText(getActivity(),"加载更多",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //dx用来判断横向滑动方向，dy用来判断纵向滑动方向
+                if(dy > 0){
+                    //大于0表示，正在向down滚动
+                    isScrollDown = true;
+                }else{
+                    //小于等于0 表示停止或向down滚动
+                    isScrollDown = false;
+                }
+            }
+        });
     }
 }
