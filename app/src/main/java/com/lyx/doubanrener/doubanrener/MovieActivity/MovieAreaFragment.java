@@ -1,7 +1,6 @@
-package com.lyx.doubanrener.doubanrener.Fragment;
+package com.lyx.doubanrener.doubanrener.MovieActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,16 +20,21 @@ import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.MovieAdapter;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
-import com.lyx.doubanrener.doubanrener.MovieActivity.MovieActivity;
 import com.lyx.doubanrener.doubanrener.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by root on 15-6-20.
+ * Created by root on 15-6-21.
  */
-public class MovieFragment extends Fragment {
+public class MovieAreaFragment extends Fragment {
+
+    private static final String ARG_POSITION = "position";
+    /**
+     * 获取标签的名称
+     * */
+    private String position;
 
     private static int REFRESH_FINISH = 1;
     /**
@@ -45,7 +49,7 @@ public class MovieFragment extends Fragment {
     private int startPage = 0;
     //加载线程锁,
     private Boolean LoadingThreadLock = true;
-    private String mGetNewUrl = "http://api.douban.com/v2/movie/search?tag=最新";
+    private String mGetNewUrl = "http://api.douban.com/v2/movie/search?tag=";
     private View mView;
     private LayoutInflater mInflater;
     private MovieAdapter mAdapter;
@@ -55,11 +59,20 @@ public class MovieFragment extends Fragment {
     private ProgressBarCircular progressBarCircular;
     private GridLayoutManager manager;
     private FloatingActionButton fab;
+
+    public static MovieAreaFragment newInstance(String position) {
+        MovieAreaFragment f = new MovieAreaFragment();
+        Bundle b = new Bundle();
+        b.putString(ARG_POSITION, position);
+        f.setArguments(b);
+        return f;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (mView == null) {
-            mView = inflater.inflate(R.layout.fragment_movie, container, false);
-        }
+        position = getArguments().getString(ARG_POSITION);
+        this.mView = inflater.inflate(R.layout.fragment_movie, container, false);
+
         this.mInflater = inflater;
         initPregress();
         initFloatButton();
@@ -75,6 +88,7 @@ public class MovieFragment extends Fragment {
         return mView;
     }
 
+
     /**
      * 初始化浮动按键
      * */
@@ -85,8 +99,7 @@ public class MovieFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MovieActivity.class);
-                startActivity(intent);
+
             }
         });
     }
@@ -125,13 +138,12 @@ public class MovieFragment extends Fragment {
             startPage = 0;
         }
         Ion.with(getActivity())
-                .load(mGetNewUrl+"&start="+String.valueOf(startPage)+"&count="+String.valueOf(countPage))
+                .load(mGetNewUrl+position+"&start="+String.valueOf(startPage)+"&count="+String.valueOf(countPage))
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         try {
-
                             new Thread(new DecodeJsonThead(result, getActivity(), mList)).start();
                         } catch (Exception ee) {
                             ee.printStackTrace();
@@ -149,7 +161,8 @@ public class MovieFragment extends Fragment {
             mRecyclerView.setAdapter(mAdapter);
         } else {
             if (startPage == 0) {
-                mAdapter.onDateChange(mList);
+                mAdapter = new MovieAdapter(layoutInflater, getActivity(), mList);
+                mRecyclerView.setAdapter(mAdapter);
             } else {
                 mAdapter.onDateInsert(mList, startPage, countPage);
             }

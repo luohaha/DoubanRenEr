@@ -32,6 +32,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.mList = list;
         this.notifyDataSetChanged();
     }
+    public void onDateInsert(ArrayList<HashMap<String, Object>> list, int start, int count) {
+        this.mList = list;
+        this.notifyItemRangeInserted(start, count);
+    }
     @Override
     public int getItemCount() {
         if (mList != null) {

@@ -29,8 +29,8 @@ public class MovieActivity extends ActionBarActivity {
 
     private ListView mDrawerList;
     ViewPager pager;
-    private String titles[] = new String[]{"Top250", "热门", "最新", "经典", "豆瓣高分", "冷门佳片", "华语",
-    "欧美", "韩国", "日本", "动作", "喜剧", "爱情", "科幻", "悬疑", "恐怖", "治愈"};
+    private String titles[] = new String[]{"top250", "热门", "华语",
+    "欧美", "动作", "喜剧", "爱情", "科幻", "悬疑", "恐怖"};
     private Toolbar toolbar;
 
     SlidingTabLayout slidingTabLayout;
@@ -57,7 +57,7 @@ public class MovieActivity extends ActionBarActivity {
          * */
         pager = (ViewPager) findViewById(R.id.viewpager);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), titles));
+        pager.setAdapter(new MovieViewPagerAdapter(getSupportFragmentManager(), titles));
 
         slidingTabLayout.setViewPager(pager);
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -66,7 +66,7 @@ public class MovieActivity extends ActionBarActivity {
                 return Color.WHITE;
             }
         });
-        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.movie, R.string.movie);
         mDrawerLayout.setDrawerListener(drawerToggle);
         String[] values = new String[]{
                 "登陆/注册", "喜欢", "收藏", "MATERIAL"
