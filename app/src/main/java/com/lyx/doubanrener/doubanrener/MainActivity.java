@@ -3,10 +3,12 @@ package com.lyx.doubanrener.doubanrener;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -19,7 +21,7 @@ import com.lyx.doubanrener.doubanrener.Fragment.ViewPagerAdapter;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.SlidingTabLayout;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -105,7 +107,7 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
         toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-        mDrawerLayout.closeDrawer(Gravity.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -116,7 +118,7 @@ public class MainActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                mDrawerLayout.openDrawer(Gravity.START);
+                mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
 

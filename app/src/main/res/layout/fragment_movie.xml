@@ -14,7 +14,6 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:textSize="24sp"
-            android:layout_below="@+id/tintradio"
             android:layout_centerVertical="true"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true" />

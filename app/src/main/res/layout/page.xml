@@ -9,44 +9,6 @@
         android:background="@color/material_blue_grey_800"
         android:layout_height="fill_parent">
 
-        <android.support.v7.internal.widget.TintCheckBox
-            android:id="@+id/tintcheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="128dp" />
-
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switchcompat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tintcheckbox"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp" />
-
-        <android.support.v7.internal.widget.TintEditText
-            android:id="@+id/tintedittxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/switchcompat"
-            android:text="Sample EditText"
-            android:layout_marginTop="20dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-
-        <android.support.v7.internal.widget.TintRadioButton
-            android:id="@+id/tintradio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tintedittxt"
-            android:text="Sample Text"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true" />
 
         <com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton
             android:id="@+id/fabButton"
@@ -67,7 +29,6 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:textSize="24sp"
-            android:layout_below="@+id/tintradio"
             android:layout_centerVertical="true"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true" />

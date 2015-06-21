@@ -125,7 +125,7 @@ public class MovieFragment extends Fragment {
             startPage = 0;
         }
         Ion.with(getActivity())
-                .load(mGetNewUrl+"&start="+String.valueOf(startPage)+"&count="+String.valueOf(countPage))
+                .load(mGetNewUrl+"&start="+String.valueOf(startPage)+"&count="+String.valueOf(countPage)+"&"+getResources().getString(R.string.apikey))
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override

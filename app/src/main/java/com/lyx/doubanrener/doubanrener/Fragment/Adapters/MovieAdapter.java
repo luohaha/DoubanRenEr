@@ -21,11 +21,34 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private ArrayList<HashMap<String, Object>> mList;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
+    private MyItemClickListener mItemClickListener = null;
+    private MyItemLongClickListener mItemLongClickListener = null;
 
     public MovieAdapter(LayoutInflater mLayoutInflater, Context mContext, ArrayList<HashMap<String, Object>> mList) {
         this.mLayoutInflater = mLayoutInflater;
         this.mContext = mContext;
         this.mList = mList;
+    }
+
+    //define interface
+    public interface MyItemClickListener {
+        public void onItemClick(View view,int postion);
+    }
+
+    public interface MyItemLongClickListener {
+        public void onItemLongClick(View view,int postion);
+    }
+
+    /**
+     * 设置Item点击监听
+     * @param listener
+     */
+    public void setOnItemClickListener(MyItemClickListener listener){
+        this.mItemClickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(MyItemLongClickListener listener){
+        this.mItemLongClickListener = listener;
     }
 
     public void onDateChange(ArrayList<HashMap<String, Object>> list) {
@@ -47,7 +70,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = mLayoutInflater.from(mContext).inflate(R.layout.movie_gridview_1_item, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view, mItemClickListener, mItemLongClickListener);
         viewHolder.textView = (TextView)view.findViewById(R.id.movie_gridview_1_item_title);
         viewHolder.imageView = (ImageView)view.findViewById(R.id.movie_gridview_1_item_image);
         viewHolder.rating = (TextView)view.findViewById(R.id.movie_gridview_1_item_rating);
@@ -71,14 +94,34 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         public TextView textView;
         public ImageView imageView;
         public TextView rating;
+        private MyItemClickListener mListener;
+        private MyItemLongClickListener mLongClickListener;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, MyItemClickListener listener, MyItemLongClickListener longListener) {
             super(itemView);
+            this.mListener = listener;
+            this.mLongClickListener = longListener;
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
 
+        @Override
+        public void onClick(View v) {
+            if(mListener != null){
+                mListener.onItemClick(v,getPosition());
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(mLongClickListener != null){
+                mLongClickListener.onItemLongClick(v, getPosition());
+            }
+            return true;
         }
     }
 }

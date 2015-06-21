@@ -1,6 +1,7 @@
 package com.lyx.doubanrener.doubanrener.MovieActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +21,7 @@ import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.MovieAdapter;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
+import com.lyx.doubanrener.doubanrener.MovieItemActivity.MovieItemActivity;
 import com.lyx.doubanrener.doubanrener.R;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import java.util.HashMap;
 /**
  * Created by root on 15-6-21.
  */
-public class MovieAreaFragment extends Fragment {
+public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemClickListener{
 
     private static final String ARG_POSITION = "position";
     /**
@@ -88,6 +90,14 @@ public class MovieAreaFragment extends Fragment {
         return mView;
     }
 
+    /**
+     * 初始化点击处理
+     * */
+
+    @Override
+    public void onItemClick(View view, int postion) {
+        Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * 初始化浮动按键
@@ -99,7 +109,8 @@ public class MovieAreaFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), MovieItemActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -138,7 +149,7 @@ public class MovieAreaFragment extends Fragment {
             startPage = 0;
         }
         Ion.with(getActivity())
-                .load(mGetNewUrl+position+"&start="+String.valueOf(startPage)+"&count="+String.valueOf(countPage))
+                .load(mGetNewUrl+position+"&start="+String.valueOf(startPage)+"&count="+String.valueOf(countPage)+"&"+getResources().getString(R.string.apikey))
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
@@ -167,6 +178,7 @@ public class MovieAreaFragment extends Fragment {
                 mAdapter.onDateInsert(mList, startPage, countPage);
             }
         }
+        mAdapter.setOnItemClickListener(this);
         startPage += countPage;
     }
 
