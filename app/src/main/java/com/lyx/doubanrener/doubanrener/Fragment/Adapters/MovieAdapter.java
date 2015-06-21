@@ -46,12 +46,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         ViewHolder viewHolder = new ViewHolder(view);
         viewHolder.textView = (TextView)view.findViewById(R.id.movie_gridview_1_item_title);
         viewHolder.imageView = (ImageView)view.findViewById(R.id.movie_gridview_1_item_image);
+        viewHolder.rating = (TextView)view.findViewById(R.id.movie_gridview_1_item_rating);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.textView.setText((String)mList.get(i).get("title"));
+        String t = (String)mList.get(i).get("title");
+        viewHolder.textView.setText((t.length() > 9)?t.substring(0, 9)+"...":t);
+        viewHolder.rating.setText(String.valueOf(mList.get(i).get("rating"))+" 分");
         Ion.with(viewHolder.imageView)
                 .placeholder(R.color.light)
                 .error(R.color.red)
@@ -67,6 +70,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public ImageView imageView;
+        public TextView rating;
 
         public ViewHolder(View itemView) {
             super(itemView);

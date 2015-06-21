@@ -28,7 +28,18 @@
                 android:layout_height="match_parent"
             />
         </android.support.v4.widget.SwipeRefreshLayout>
-
+        <com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton
+            android:id="@+id/movie_more_button"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:textSize="24sp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="25dp" />
     </RelativeLayout>
 
 

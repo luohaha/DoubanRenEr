@@ -21,6 +21,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.MovieAdapter;
 import com.lyx.doubanrener.doubanrener.MainActivity;
+import com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
 import com.lyx.doubanrener.doubanrener.R;
 
@@ -39,8 +40,14 @@ public class MovieFragment extends Fragment {
      * */
     private boolean isScrollDown = false;
 
-    private String mGetTop250Url = "http://api.douban.com/v2/movie/top250?start=0&count=6";
-    private String mGetUsboxUrl = "http://api.douban.com/v2/movie/us_box?start=0&count=6";
+    /**
+     * 实现分页
+     * */
+    private int countPage = 10;
+    private int startPage = 0;
+    //加载线程锁,
+    private Boolean LoadingThreadLock = true;
+    private String mGetNewUrl = "http://api.douban.com/v2/movie/search?tag=最新";
     private View mView;
     private LayoutInflater mInflater;
     private MovieAdapter mAdapter;
@@ -49,7 +56,7 @@ public class MovieFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ProgressBarCircular progressBarCircular;
     private GridLayoutManager manager;
-
+    private FloatingActionButton fab;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mView == null) {
@@ -57,6 +64,7 @@ public class MovieFragment extends Fragment {
         }
         this.mInflater = inflater;
         initPregress();
+        initFloatButton();
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.movie_recyclerview);
         manager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(manager);
@@ -64,10 +72,24 @@ public class MovieFragment extends Fragment {
         initSwipeRefresh();
         initView(inflater);
         progressBarCircular.setVisibility(View.VISIBLE);
-        getDataViaHttp();
+        getDataViaHttp(0);
         return mView;
     }
 
+    /**
+     * 初始化浮动按键
+     * */
+    private void initFloatButton() {
+        fab = (FloatingActionButton) mView.findViewById(R.id.movie_more_button);
+        fab.setDrawableIcon(getResources().getDrawable(R.drawable.plus));
+        fab.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
     /**
      *初始化progress
      * */
@@ -88,23 +110,29 @@ public class MovieFragment extends Fragment {
                  * 刷新操作
                  * */
                 mSwipeRefreshLayout.setRefreshing(true);
-                getDataViaHttp();
+                getDataViaHttp(0);
             }
         });
     }
 
-    private void getDataViaHttp() {
+    /**
+     * 网络加载
+     * @param flag 为0时刷新,为1时加载
+     */
+    private void getDataViaHttp(int flag) {
+        if (flag == 0) {
+            mList = new ArrayList<HashMap<String, Object>>();
+            startPage = 0;
+        }
         Ion.with(getActivity())
-                .load(mGetUsboxUrl)
+                .load(mGetNewUrl+"&start="+String.valueOf(startPage)+"&count="+String.valueOf(countPage))
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         try {
-                            mList = new ArrayList<HashMap<String, Object>>();
+                            startPage += countPage;
                             new Thread(new DecodeJsonThead(result, getActivity(), mList)).start();
-                            //gridview
-                            initView(mInflater);
                         } catch (Exception ee) {
                             ee.printStackTrace();
                         }
@@ -146,13 +174,11 @@ public class MovieFragment extends Fragment {
                 if (jsonArray == null) {
                     Toast.makeText(mContext, "网络错误~~", Toast.LENGTH_SHORT);
                 } else {
-                    int range = (jsonArray.size() >= 10) ? 10 : jsonArray.size();
-                    for (int i = 0; i < range; i++) {
+                    for (int i = 0; i < jsonArray.size(); i++) {
                         HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                        hashMap.put("title", jsonArray.get(i).getAsJsonObject().get("subject").getAsJsonObject()
-                                .get("title").getAsString());
-                        hashMap.put("image", jsonArray.get(i).getAsJsonObject().get("subject").getAsJsonObject()
-                                .get("images").getAsJsonObject().get("large").getAsString());
+                        hashMap.put("title", jsonArray.get(i).getAsJsonObject().get("title").getAsString());
+                        hashMap.put("image", jsonArray.get(i).getAsJsonObject().get("images").getAsJsonObject().get("large").getAsString());
+                        hashMap.put("rating", jsonArray.get(i).getAsJsonObject().get("rating").getAsJsonObject().get("average").getAsFloat());
                         mList.add(hashMap);
                     }
                 }
@@ -174,6 +200,7 @@ public class MovieFragment extends Fragment {
                     initView(mInflater);
                     mSwipeRefreshLayout.setRefreshing(false);
                     progressBarCircular.setVisibility(View.GONE);
+                    LoadingThreadLock = true;
                 }
             }
         };
@@ -191,8 +218,9 @@ public class MovieFragment extends Fragment {
                     int lastItem = manager.findLastCompletelyVisibleItemPosition();
                     int totalItemtCount = manager.getItemCount();
 
-                    if (lastItem == (totalItemtCount - 1) && isScrollDown) {
-                        Toast.makeText(getActivity(),"加载更多",Toast.LENGTH_SHORT).show();
+                    if (lastItem == (totalItemtCount - 1) && isScrollDown && LoadingThreadLock) {
+                        LoadingThreadLock = false;
+                        getDataViaHttp(1);
                     }
                 }
             }

@@ -34,7 +34,7 @@ public class FloatingActionButton extends Button {
         icon = new ImageView(context);
         if (drawableIcon != null) {
             try {
-                icon.setBackground(drawableIcon);
+                icon.setBackgroundDrawable(drawableIcon);
             } catch (NoSuchMethodError e) {
                 icon.setBackgroundDrawable(drawableIcon);
             }
@@ -85,7 +85,7 @@ public class FloatingActionButton extends Button {
     public void setDrawableIcon(Drawable drawableIcon) {
         this.drawableIcon = drawableIcon;
         try {
-            icon.setBackground(drawableIcon);
+            icon.setBackgroundDrawable(drawableIcon);
         } catch (NoSuchMethodError e) {
             e.printStackTrace();
         }
