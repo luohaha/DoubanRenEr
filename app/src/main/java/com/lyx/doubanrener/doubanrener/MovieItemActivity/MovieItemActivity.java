@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +24,8 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
+import com.lyx.doubanrener.doubanrener.MovieItemActivity.Adapters.PeopleFaceAdapter;
+import com.lyx.doubanrener.doubanrener.MoviePeopleActivity.MoviePeopleActivity;
 import com.lyx.doubanrener.doubanrener.R;
 
 import java.util.ArrayList;
@@ -28,7 +34,7 @@ import java.util.HashMap;
 /**
  * Created by root on 15-6-21.
  */
-public class MovieItemActivity extends AppCompatActivity{
+public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAdapter.MyItemClickListener{
     private static int REFRESH_FINISH = 1;
 
     private ProgressBarCircular progressBarCircular;
@@ -38,10 +44,15 @@ public class MovieItemActivity extends AppCompatActivity{
     private ImageView imageView;
     private TextView mBaseInfoTv;
     private TextView mSummaryTv;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLinearLayoutManager;
+    private PeopleFaceAdapter mPeopleFaceAdapter;
+    private NestedScrollView mNestedScrollView;
 
     private String mItemUrl = "http://api.douban.com/v2/movie/subject/";
     private String mMovieId;
 
+    private ArrayList<HashMap<String, Object>> mList;
     /**
      * UI data
      * */
@@ -67,6 +78,25 @@ public class MovieItemActivity extends AppCompatActivity{
     private void initInfoUI() {
         mBaseInfoTv = (TextView) findViewById(R.id.activity_movie_item_baseinfo_tv);
         mSummaryTv = (TextView) findViewById(R.id.activity_movie_item_summary_tv);
+        mNestedScrollView = (NestedScrollView) findViewById(R.id.activity_movie_item_scrollview);
+        mNestedScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mRecyclerView.setNestedScrollingEnabled(false);
+                return false;
+            }
+        });
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.activity_movie_item_people_list);
+        mRecyclerView.setHasFixedSize(true);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mList = new ArrayList<HashMap<String, Object>>();
+        /**
+         * set adapter
+         * */
+        initPeopleFaceAdapter();
     }
     /**
      * 初始化toolbar
@@ -142,7 +172,13 @@ public class MovieItemActivity extends AppCompatActivity{
                      * */
                     String directors = "";
                     for (int i = 0; i < result.get("directors").getAsJsonArray().size(); i++) {
-                        directors += result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("name").getAsString()+" / ";
+                        String name = result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("name").getAsString();
+                        directors += name+" / ";
+                        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                        hashMap.put("name", name);
+                        hashMap.put("people_id", result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("id").getAsString());
+                        hashMap.put("image", result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("avatars").getAsJsonObject().get("medium").getAsString());
+                        mList.add(hashMap);
                     }
 
                     String genres = "";
@@ -151,7 +187,13 @@ public class MovieItemActivity extends AppCompatActivity{
                     }
                     String casts = "";
                     for (int i = 0; i < result.get("casts").getAsJsonArray().size(); i++) {
-                        casts += result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("name").getAsString()+" / ";
+                        String name = result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("name").getAsString();
+                        casts += name + " / ";
+                        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                        hashMap.put("name", name);
+                        hashMap.put("people_id", result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("id").getAsString());
+                        hashMap.put("image", result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("avatars").getAsJsonObject().get("large").getAsString());
+                        mList.add(hashMap);
                     }
                     String countries = "";
                     for (int i = 0; i < result.get("countries").getAsJsonArray().size(); i++) {
@@ -179,6 +221,8 @@ public class MovieItemActivity extends AppCompatActivity{
                      * 电影简介
                      * */
                     mSummaryTv_data = result.get("summary").getAsString();
+
+
                 }
                 Message message = Message.obtain();
                 message.what = REFRESH_FINISH;
@@ -209,6 +253,24 @@ public class MovieItemActivity extends AppCompatActivity{
         collapsingToolbarLayout.setTitle(collapsingToolbarLayout_data);
         mBaseInfoTv.setText(mBaseInfoTv_data);
         mSummaryTv.setText(mSummaryTv_data);
+        initPeopleFaceAdapter();
         progressBarCircular.setVisibility(View.GONE);
+        mNestedScrollView.smoothScrollTo(0, 0);
+    }
+
+    /**
+     * 初始化人物信息的adapter
+     * */
+    private void initPeopleFaceAdapter() {
+        mPeopleFaceAdapter = new PeopleFaceAdapter(getLayoutInflater(), this, mList);
+        mRecyclerView.setAdapter(mPeopleFaceAdapter);
+        mPeopleFaceAdapter.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(View view, int postion) {
+        Intent intent = new Intent(MovieItemActivity.this, MoviePeopleActivity.class);
+        intent.putExtra("people_id", mList.get(postion).get("people_id").toString());
+        startActivity(intent);
     }
 }
