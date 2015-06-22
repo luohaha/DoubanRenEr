@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="card_back">#E3E3E3</color>
     <color name="white">#FFFFFF</color>
     <color name="red">#bf360c</color>
     <color name="ripple_red">#ffbf5232</color>

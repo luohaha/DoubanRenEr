@@ -1,26 +1,214 @@
 package com.lyx.doubanrener.doubanrener.MovieItemActivity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
 import com.lyx.doubanrener.doubanrener.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by root on 15-6-21.
  */
 public class MovieItemActivity extends AppCompatActivity{
+    private static int REFRESH_FINISH = 1;
+
+    private ProgressBarCircular progressBarCircular;
+
+    private Toolbar toolbar;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ImageView imageView;
+    private TextView mBaseInfoTv;
+    private TextView mSummaryTv;
+
+    private String mItemUrl = "http://api.douban.com/v2/movie/subject/";
+    private String mMovieId;
+
+    /**
+     * UI data
+     * */
+    private String imageView_data;
+    private String collapsingToolbarLayout_data;
+    private String mBaseInfoTv_data;
+    private String mSummaryTv_data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_item);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_movie_item_toolbar);
+        initToolbar();
+        initCollapsingToolbarLayout();
+        initInfoUI();
+        initPregress();
+        getMovieId();
+        getDataViaHttp();
+    }
+
+    /**
+     * 初始化内容页面UI
+     * */
+    private void initInfoUI() {
+        mBaseInfoTv = (TextView) findViewById(R.id.activity_movie_item_baseinfo_tv);
+        mSummaryTv = (TextView) findViewById(R.id.activity_movie_item_summary_tv);
+    }
+    /**
+     * 初始化toolbar
+     * */
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.activity_movie_item_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+    }
+    /**
+     *初始化progress
+     * */
+    private void initPregress() {
+        progressBarCircular = (ProgressBarCircular) findViewById(R.id.activity_movie_item_progress);
+        progressBarCircular.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+    }
+    /**
+     * 初始化CollapsingToolbarLayout
+     * */
+    private void initCollapsingToolbarLayout() {
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.activity_movie_item_collapsing_toolbar);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.activity_movie_item_collapsing_toolbar);
-        collapsingToolbarLayout.setTitle("haha");
+        imageView = (ImageView) findViewById(R.id.activity_movie_item_image);
+    }
+    /**
+     * get movie id from intent
+     * */
+    private void getMovieId() {
+        Intent intent = getIntent();
+        mMovieId = intent.getStringExtra("movie_id");
+    }
+    /**
+     *
+     * */
+    private void getDataViaHttp() {
+        progressBarCircular.setVisibility(View.VISIBLE);
+        Ion.with(this)
+                .load(mItemUrl+mMovieId+"?"+getResources().getString(R.string.apikey))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        try {
+                            new Thread(new DecodeJsonThead(result)).start();
+                        } catch (Exception ee) {
+                            ee.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 新建处理费时操作的线程
+     */
+    public class DecodeJsonThead implements Runnable {
+        //返回值
+        private JsonObject result;
+
+        public DecodeJsonThead(JsonObject result) {
+            this.result = result;
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (result == null) {
+                    Toast.makeText(MovieItemActivity.this, "网络错误~~", Toast.LENGTH_SHORT);
+                } else {
+                    imageView_data = result.get("images").getAsJsonObject().get("large").getAsString();
+                    collapsingToolbarLayout_data = result.get("title").getAsString();
+                    /**
+                     * 基本信息栏目读取
+                     * */
+                    String directors = "";
+                    for (int i = 0; i < result.get("directors").getAsJsonArray().size(); i++) {
+                        directors += result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("name").getAsString()+" / ";
+                    }
+
+                    String genres = "";
+                    for (int i = 0; i < result.get("genres").getAsJsonArray().size(); i++) {
+                        genres += result.get("genres").getAsJsonArray().get(i).getAsString()+" / ";
+                    }
+                    String casts = "";
+                    for (int i = 0; i < result.get("casts").getAsJsonArray().size(); i++) {
+                        casts += result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("name").getAsString()+" / ";
+                    }
+                    String countries = "";
+                    for (int i = 0; i < result.get("countries").getAsJsonArray().size(); i++) {
+                        countries += result.get("countries").getAsJsonArray().get(i).getAsString()+" / ";
+                    }
+                    String aka = "";
+                    for (int i = 0; i < result.get("aka").getAsJsonArray().size(); i++) {
+                        aka += result.get("aka").getAsJsonArray().get(i).getAsString()+" / ";
+                    }
+                    float rating = result.get("rating").getAsJsonObject().get("average").getAsFloat();
+                    String year = result.get("year").getAsString();
+                    int ratings_count = result.get("ratings_count").getAsInt();
+                    String original_title = result.get("original_title").getAsString();
+                    mBaseInfoTv_data = "导演: "+ directors+"\n"+
+                                       "主演: "+ casts + "\n"+
+                                       "年代: "+ year + "\n"+
+                                       "类型: "+ genres + "\n"+
+                                       "制片国家/地区: "+countries + "\n"+
+                                       "原名: "+ original_title + "\n"+
+                                       "又名: "+ aka + "\n"+
+                                       "评分: "+ String.valueOf(rating) + "\n"+
+                                       "评分人数: "+ String.valueOf(ratings_count);
+
+                    /**
+                     * 电影简介
+                     * */
+                    mSummaryTv_data = result.get("summary").getAsString();
+                }
+                Message message = Message.obtain();
+                message.what = REFRESH_FINISH;
+                handler.sendMessage(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * 处理当刷新完成时的handler信息
+         */
+        private Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == REFRESH_FINISH) {
+                    RefreshUI();
+                }
+            }
+        };
+    }
+
+    private void RefreshUI() {
+        Ion.with(imageView)
+                .placeholder(R.color.light)
+                .error(R.color.red)
+                .load(imageView_data);
+        collapsingToolbarLayout.setTitle(collapsingToolbarLayout_data);
+        mBaseInfoTv.setText(mBaseInfoTv_data);
+        mSummaryTv.setText(mSummaryTv_data);
+        progressBarCircular.setVisibility(View.GONE);
     }
 }

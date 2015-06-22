@@ -96,7 +96,9 @@ public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemCl
 
     @Override
     public void onItemClick(View view, int postion) {
-        Toast.makeText(getActivity(), "haha", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), MovieItemActivity.class);
+        intent.putExtra("movie_id", mList.get(postion).get("movie_id").toString());
+        startActivity(intent);
     }
 
     /**
@@ -109,8 +111,7 @@ public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemCl
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MovieItemActivity.class);
-                startActivity(intent);
+
             }
         });
     }
@@ -209,6 +210,7 @@ public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemCl
                         hashMap.put("title", jsonArray.get(i).getAsJsonObject().get("title").getAsString());
                         hashMap.put("image", jsonArray.get(i).getAsJsonObject().get("images").getAsJsonObject().get("large").getAsString());
                         hashMap.put("rating", jsonArray.get(i).getAsJsonObject().get("rating").getAsJsonObject().get("average").getAsFloat());
+                        hashMap.put("movie_id", jsonArray.get(i).getAsJsonObject().get("id").getAsString());
                         mList.add(hashMap);
                     }
                 }

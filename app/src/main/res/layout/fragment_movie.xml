@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:background="@color/material_blue_grey_800"
+        android:background="@color/card_back"
         android:layout_height="fill_parent">
         <com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular
             android:id="@+id/movie_progress"
