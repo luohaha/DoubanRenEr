@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -163,7 +164,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
         public void run() {
             try {
                 if (result == null) {
-                    Toast.makeText(MovieItemActivity.this, "网络错误~~", Toast.LENGTH_SHORT);
+                    Toast.makeText(MovieItemActivity.this, "网络错误~~", Toast.LENGTH_SHORT).show();
                 } else {
                     imageView_data = result.get("images").getAsJsonObject().get("large").getAsString();
                     collapsingToolbarLayout_data = result.get("title").getAsString();
@@ -176,8 +177,17 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
                         directors += name+" / ";
                         HashMap<String, Object> hashMap = new HashMap<String, Object>();
                         hashMap.put("name", name);
-                        hashMap.put("people_id", result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("id").getAsString());
-                        hashMap.put("image", result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("avatars").getAsJsonObject().get("medium").getAsString());
+                        if (result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("id").isJsonNull()) {
+                            hashMap.put("people_id", "null");
+                        } else {
+                            hashMap.put("people_id", result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("id").getAsString());
+                        }
+
+                        if (result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("avatars").isJsonNull()) {
+                            hashMap.put("image", "null");
+                        } else {
+                            hashMap.put("image", result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("avatars").getAsJsonObject().get("large").getAsString());
+                        }
                         mList.add(hashMap);
                     }
 
@@ -191,8 +201,18 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
                         casts += name + " / ";
                         HashMap<String, Object> hashMap = new HashMap<String, Object>();
                         hashMap.put("name", name);
-                        hashMap.put("people_id", result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("id").getAsString());
-                        hashMap.put("image", result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("avatars").getAsJsonObject().get("large").getAsString());
+                        //
+                        if (result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("id").isJsonNull()) {
+                            hashMap.put("people_id", "null");
+                        } else {
+                            hashMap.put("people_id", result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("id").getAsString());
+                        }
+                        //
+                        if (result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("avatars").isJsonNull()) {
+                            hashMap.put("image", "null");
+                        } else {
+                            hashMap.put("image", result.get("casts").getAsJsonArray().get(i).getAsJsonObject().get("avatars").getAsJsonObject().get("large").getAsString());
+                        }
                         mList.add(hashMap);
                     }
                     String countries = "";
