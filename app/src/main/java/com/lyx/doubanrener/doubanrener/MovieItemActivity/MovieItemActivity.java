@@ -177,12 +177,13 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
                         directors += name+" / ";
                         HashMap<String, Object> hashMap = new HashMap<String, Object>();
                         hashMap.put("name", name);
+                        //
                         if (result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("id").isJsonNull()) {
                             hashMap.put("people_id", "null");
                         } else {
                             hashMap.put("people_id", result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("id").getAsString());
                         }
-
+                        //
                         if (result.get("directors").getAsJsonArray().get(i).getAsJsonObject().get("avatars").isJsonNull()) {
                             hashMap.put("image", "null");
                         } else {

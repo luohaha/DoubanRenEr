@@ -73,7 +73,7 @@ public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         position = getArguments().getString(ARG_POSITION);
-        this.mView = inflater.inflate(R.layout.fragment_movie, container, false);
+        this.mView = inflater.inflate(R.layout.movie_double_list, container, false);
 
         this.mInflater = inflater;
         initPregress();
