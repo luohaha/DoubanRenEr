@@ -101,6 +101,8 @@ public class MovieFragment extends Fragment{
     private String BoxDate;
 
     private LayoutRipple loveButton;
+    private LayoutRipple scienceButton;
+    private LayoutRipple actionButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,24 +142,44 @@ public class MovieFragment extends Fragment{
         manager = new GridLayoutManager(getActivity(), 1);
         manager.setOrientation(GridLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(manager);
+
         /**
          * love
          * */
         loveManager = new GridLayoutManager(getActivity(), 3);
         loveManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerViewLove.setLayoutManager(loveManager);
+        mRecyclerViewLove.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         /**
          * action
          * */
         actionManager = new GridLayoutManager(getActivity(), 3);
         actionManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerViewAction.setLayoutManager(actionManager);
+        mRecyclerViewAction.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         /**
          * science
          * */
         scienceManager = new GridLayoutManager(getActivity(), 3);
         scienceManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerViewScience.setLayoutManager(scienceManager);
+        mRecyclerViewScience.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
     }
     /**
      * init ui
@@ -177,9 +199,35 @@ public class MovieFragment extends Fragment{
             }
         });
         loveButton = (LayoutRipple)mView.findViewById(R.id.love_button);
-        loveButton.setRippleColor(getActivity().getResources().getColor(R.color.grey));
-        loveButton.setRippleSpeed(4);
-
+        loveButton.setRippleColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+        loveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MovieActivity.class);
+                intent.putExtra("page", 6);
+                startActivity(intent);
+            }
+        });
+        scienceButton = (LayoutRipple)mView.findViewById(R.id.science_button);
+        scienceButton.setRippleColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+        scienceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MovieActivity.class);
+                intent.putExtra("page", 7);
+                startActivity(intent);
+            }
+        });
+        actionButton = (LayoutRipple)mView.findViewById(R.id.action_button);
+        actionButton.setRippleColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MovieActivity.class);
+                intent.putExtra("page", 4);
+                startActivity(intent);
+            }
+        });
     }
     /**
      * 初始化浮动按键

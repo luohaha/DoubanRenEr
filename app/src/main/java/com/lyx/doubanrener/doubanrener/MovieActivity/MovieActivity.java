@@ -59,6 +59,7 @@ public class MovieActivity extends ActionBarActivity {
         pager = (ViewPager) findViewById(R.id.viewpager);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         pager.setAdapter(new MovieViewPagerAdapter(getSupportFragmentManager(), titles));
+        pager.setCurrentItem(getIntent().getIntExtra("page", 0));
 
         slidingTabLayout.setViewPager(pager);
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
