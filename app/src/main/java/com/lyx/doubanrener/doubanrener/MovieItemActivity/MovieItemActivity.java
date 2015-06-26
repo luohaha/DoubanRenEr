@@ -80,16 +80,11 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
         mBaseInfoTv = (TextView) findViewById(R.id.activity_movie_item_baseinfo_tv);
         mSummaryTv = (TextView) findViewById(R.id.activity_movie_item_summary_tv);
         mNestedScrollView = (NestedScrollView) findViewById(R.id.activity_movie_item_scrollview);
-        mNestedScrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mRecyclerView.setNestedScrollingEnabled(false);
-                return false;
-            }
-        });
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_movie_item_people_list);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setNestedScrollingEnabled(false);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
@@ -277,6 +272,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
         initPeopleFaceAdapter();
         progressBarCircular.setVisibility(View.GONE);
         mNestedScrollView.smoothScrollTo(0, 0);
+        mNestedScrollView.setVisibility(View.VISIBLE);
     }
 
     /**

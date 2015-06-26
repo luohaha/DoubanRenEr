@@ -2,21 +2,22 @@ package com.lyx.doubanrener.doubanrener.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +26,7 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.BoxAdapter;
-import com.lyx.doubanrener.doubanrener.Fragment.Adapters.LoveAdapter;
-import com.lyx.doubanrener.doubanrener.Fragment.Adapters.MovieAdapter;
+import com.lyx.doubanrener.doubanrener.Fragment.Adapters.SetLayoutData;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.Other.LayoutRipple;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
@@ -70,26 +70,22 @@ public class MovieFragment extends Fragment{
     /**
      * love
      * */
-    private LoveAdapter mLoveAdapter;
+    //private LoveAdapter mLoveAdapter;
     private ArrayList<HashMap<String, Object>> mLoveMovieList;
-    private RecyclerView mRecyclerViewLove;
-    private GridLayoutManager loveManager;
+    //private RecyclerView mRecyclerViewLove;
+    //private GridLayoutManager loveManager;
 
     /**
      * action
      * */
-    private LoveAdapter mActionAdapter;
     private ArrayList<HashMap<String, Object>> mActionMovieList;
-    private RecyclerView mRecyclerViewAction;
-    private GridLayoutManager actionManager;
+
 
     /**
      * science
      * */
-    private LoveAdapter mScienceAdapter;
     private ArrayList<HashMap<String, Object>> mScienceMovieList;
-    private RecyclerView mRecyclerViewScience;
-    private GridLayoutManager scienceManager;
+
 
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -108,6 +104,9 @@ public class MovieFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragment_movie, container, false);
+        }
+        if (!isNetworkConnected(getActivity())) {
+            Snackbar.make(mView, "当前无网络连接~~", Snackbar.LENGTH_LONG).show();
         }
         this.mInflater = inflater;
         initPregress();
@@ -128,14 +127,10 @@ public class MovieFragment extends Fragment{
 
     private void initRecyclerView() {
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.fragment_movie_box_list);
-        mRecyclerViewLove = (RecyclerView) mView.findViewById(R.id.fragment_movie_love_list);
-        mRecyclerViewAction = (RecyclerView) mView.findViewById(R.id.fragment_movie_action_list);
-        mRecyclerViewScience = (RecyclerView) mView.findViewById(R.id.fragment_movie_science_list);
+
 
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerViewLove.setHasFixedSize(true);
-        mRecyclerViewAction.setHasFixedSize(true);
-        mRecyclerViewScience.setHasFixedSize(true);
+
         /**
          * box
          * */
@@ -143,43 +138,8 @@ public class MovieFragment extends Fragment{
         manager.setOrientation(GridLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(manager);
 
-        /**
-         * love
-         * */
-        loveManager = new GridLayoutManager(getActivity(), 3);
-        loveManager.setOrientation(GridLayoutManager.VERTICAL);
-        mRecyclerViewLove.setLayoutManager(loveManager);
-        mRecyclerViewLove.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
 
-        /**
-         * action
-         * */
-        actionManager = new GridLayoutManager(getActivity(), 3);
-        actionManager.setOrientation(GridLayoutManager.VERTICAL);
-        mRecyclerViewAction.setLayoutManager(actionManager);
-        mRecyclerViewAction.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-        /**
-         * science
-         * */
-        scienceManager = new GridLayoutManager(getActivity(), 3);
-        scienceManager.setOrientation(GridLayoutManager.VERTICAL);
-        mRecyclerViewScience.setLayoutManager(scienceManager);
-        mRecyclerViewScience.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+
     }
     /**
      * init ui
@@ -188,16 +148,7 @@ public class MovieFragment extends Fragment{
     private void initUI() {
         mBoxDateTv = (TextView) mView.findViewById(R.id.box_date_tv);
         mNestedScrollView = (NestedScrollView) mView.findViewById(R.id.fragment_movie_box_scrollview);
-        mNestedScrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mRecyclerView.setNestedScrollingEnabled(false);
-                mRecyclerViewLove.setNestedScrollingEnabled(false);
-                mRecyclerViewAction.setNestedScrollingEnabled(false);
-                mRecyclerViewScience.setNestedScrollingEnabled(false);
-                return false;
-            }
-        });
+
         loveButton = (LayoutRipple)mView.findViewById(R.id.love_button);
         loveButton.setRippleColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
         loveButton.setOnClickListener(new View.OnClickListener() {
@@ -336,6 +287,23 @@ public class MovieFragment extends Fragment{
     }
 
     /**
+     * 赋值
+     * */
+
+    private void setDataForLayout() {
+        View view = mView.findViewById(R.id.love_layout_id);
+        SetLayoutData setLayoutData = new SetLayoutData(getActivity(), view, mLoveMovieList);
+        setLayoutData.startDraw();
+
+        view = mView.findViewById(R.id.science_layout_id);
+        setLayoutData = new SetLayoutData(getActivity(), view, mScienceMovieList);
+        setLayoutData.startDraw();
+
+        view = mView.findViewById(R.id.action_layout_id);
+        setLayoutData = new SetLayoutData(getActivity(), view, mActionMovieList);
+        setLayoutData.startDraw();
+    }
+    /**
      * 给gridview赋值
      */
     private void initView(LayoutInflater layoutInflater) {
@@ -355,50 +323,6 @@ public class MovieFragment extends Fragment{
         });
 
 
-        if (mLoveAdapter == null) {
-            mLoveAdapter = new LoveAdapter(layoutInflater, getActivity(), mLoveMovieList);
-            mRecyclerViewLove.setAdapter(mLoveAdapter);
-        } else {
-            mLoveAdapter.onDateChange(mLoveMovieList);
-        }
-        mLoveAdapter.setOnItemClickListener(new LoveAdapter.MyItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion) {
-                Intent intent = new Intent(getActivity(), MovieItemActivity.class);
-                intent.putExtra("movie_id", mLoveMovieList.get(postion).get("id").toString());
-                startActivity(intent);
-            }
-        });
-
-        if (mActionAdapter == null) {
-            mActionAdapter = new LoveAdapter(layoutInflater, getActivity(), mActionMovieList);
-            mRecyclerViewAction.setAdapter(mActionAdapter);
-        } else {
-            mActionAdapter.onDateChange(mActionMovieList);
-        }
-        mActionAdapter.setOnItemClickListener(new LoveAdapter.MyItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion) {
-                Intent intent = new Intent(getActivity(), MovieItemActivity.class);
-                intent.putExtra("movie_id", mActionMovieList.get(postion).get("id").toString());
-                startActivity(intent);
-            }
-        });
-
-        if (mScienceAdapter == null) {
-            mScienceAdapter = new LoveAdapter(layoutInflater, getActivity(), mScienceMovieList);
-            mRecyclerViewScience.setAdapter(mScienceAdapter);
-        } else {
-            mScienceAdapter.onDateChange(mScienceMovieList);
-        }
-        mScienceAdapter.setOnItemClickListener(new LoveAdapter.MyItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion) {
-                Intent intent = new Intent(getActivity(), MovieItemActivity.class);
-                intent.putExtra("movie_id", mScienceMovieList.get(postion).get("id").toString());
-                startActivity(intent);
-            }
-        });
     }
 
     /**
@@ -505,11 +429,28 @@ public class MovieFragment extends Fragment{
             if (mRefreshCount==4) {
                 mRefreshCount = 0;
                 initView(mInflater);
+                setDataForLayout();
                 mSwipeRefreshLayout.setRefreshing(false);
                 progressBarCircular.setVisibility(View.GONE);
                 mBoxDateTv.setText("北美票房: "+BoxDate);
+                mNestedScrollView.setVisibility(View.VISIBLE);
             }
         }
     };
+
+    /**
+     * 判断网络链接状况
+     * */
+    public boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
 
 }

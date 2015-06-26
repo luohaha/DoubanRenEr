@@ -1,15 +1,20 @@
 package com.lyx.doubanrener.doubanrener.MoviePeopleActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +32,7 @@ import com.lyx.doubanrener.doubanrener.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.zip.Inflater;
 
 /**
  * Created by root on 15-6-22.
@@ -55,6 +61,7 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
     private String imageView_data;
     private String collapsingToolbarLayout_data;
     private String mBaseInfoTv_data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,16 +80,11 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
     private void initInfoUI() {
         mBaseInfoTv = (TextView) findViewById(R.id.activity_movie_people_baseinfo_tv);
         mNestedScrollView = (NestedScrollView) findViewById(R.id.activity_movie_people_scrollview);
-        mNestedScrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mRecyclerView.setNestedScrollingEnabled(false);
-                return false;
-            }
-        });
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_movie_people_movie_list);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setNestedScrollingEnabled(false);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
@@ -221,6 +223,7 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
         initMovieFaceAdapter();
         progressBarCircular.setVisibility(View.GONE);
         mNestedScrollView.smoothScrollTo(0,0);
+        mNestedScrollView.setVisibility(View.VISIBLE);
     }
 
     /**

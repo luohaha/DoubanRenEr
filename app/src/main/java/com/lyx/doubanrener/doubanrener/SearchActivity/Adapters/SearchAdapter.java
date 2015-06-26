@@ -1,4 +1,4 @@
-package com.lyx.doubanrener.doubanrener.Fragment.Adapters;
+package com.lyx.doubanrener.doubanrener.SearchActivity.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,27 +9,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
+import com.lyx.doubanrener.doubanrener.Fragment.Adapters.MovieAdapter;
 import com.lyx.doubanrener.doubanrener.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by root on 15-6-23.
+ * Created by root on 15-6-26.
  */
-public class LoveAdapter extends RecyclerView.Adapter<LoveAdapter.ViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private ArrayList<HashMap<String, Object>> mList;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private MyItemClickListener mItemClickListener = null;
     private MyItemLongClickListener mItemLongClickListener = null;
-
-    public LoveAdapter(LayoutInflater mLayoutInflater, Context mContext, ArrayList<HashMap<String, Object>> mList) {
-        this.mLayoutInflater = mLayoutInflater;
-        this.mContext = mContext;
-        this.mList = mList;
-    }
-
     //define interface
     public interface MyItemClickListener {
         public void onItemClick(View view,int postion);
@@ -51,6 +45,12 @@ public class LoveAdapter extends RecyclerView.Adapter<LoveAdapter.ViewHolder> {
         this.mItemLongClickListener = listener;
     }
 
+    public SearchAdapter(ArrayList<HashMap<String, Object>> mList, Context mContext, LayoutInflater mLayoutInflater) {
+        this.mList = mList;
+        this.mContext = mContext;
+        this.mLayoutInflater = mLayoutInflater;
+    }
+
     public void onDateChange(ArrayList<HashMap<String, Object>> list) {
         this.mList = list;
         this.notifyDataSetChanged();
@@ -60,32 +60,33 @@ public class LoveAdapter extends RecyclerView.Adapter<LoveAdapter.ViewHolder> {
         this.notifyItemRangeInserted(start, count);
     }
     @Override
-    public int getItemCount() {
-        if (mList != null) {
-            return mList.size();
-        }
-        return 0;
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = mLayoutInflater.from(mContext).inflate(R.layout.love_item, viewGroup, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mLayoutInflater.from(mContext).inflate(R.layout.search_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view, mItemClickListener, mItemLongClickListener);
-        viewHolder.textView = (TextView)view.findViewById(R.id.love_item_name);
-        viewHolder.imageView = (ImageView)view.findViewById(R.id.love_item_image);
-        viewHolder.rating = (TextView)view.findViewById(R.id.love_item_rating);
+        viewHolder.name = (TextView) view.findViewById(R.id.search_item_name);
+        viewHolder.year = (TextView) view.findViewById(R.id.search_item_year);
+        viewHolder.rating = (TextView) view.findViewById(R.id.search_item_rating);
+
+        viewHolder.imageView = (ImageView) view.findViewById(R.id.search_item_image);
+
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        String t = (String)mList.get(i).get("name");
-        viewHolder.textView.setText((t.length() > 9)?t.substring(0, 9)+"...":t);
-        viewHolder.rating.setText(String.valueOf(mList.get(i).get("rating"))+" 分");
-        Ion.with(viewHolder.imageView)
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        String name = mList.get(position).get("name").toString();
+        holder.name.setText((name.length() > 7)?name.substring(0, 6)+"...":name);
+        holder.year.setText(mList.get(position).get("year").toString());
+        holder.rating.setText(mList.get(position).get("rating").toString());
+        Ion.with(holder.imageView)
                 .placeholder(R.color.light)
                 .error(R.color.grey)
-                .load((String) mList.get(i).get("image"));
+                .load((String) mList.get(position).get("image"));
+    }
+
+    @Override
+    public int getItemCount() {
+        return mList.size();
     }
 
     @Override
@@ -93,11 +94,11 @@ public class LoveAdapter extends RecyclerView.Adapter<LoveAdapter.ViewHolder> {
         return position;
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        public TextView textView;
-        public ImageView imageView;
+        public TextView name;
+        public TextView year;
         public TextView rating;
+        public ImageView imageView;
         private MyItemClickListener mListener;
         private MyItemLongClickListener mLongClickListener;
 

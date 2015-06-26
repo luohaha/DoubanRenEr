@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -253,6 +254,7 @@ public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemCl
                     if (lastItem == (totalItemtCount - 1) && isScrollDown && LoadingThreadLock) {
                         LoadingThreadLock = false;
                         getDataViaHttp(1);
+                        Snackbar.make(mView, "加载更多中~~", Snackbar.LENGTH_LONG).show();
                     }
                 }
             }
