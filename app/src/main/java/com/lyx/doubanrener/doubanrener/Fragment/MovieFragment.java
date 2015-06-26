@@ -36,6 +36,7 @@ import com.lyx.doubanrener.doubanrener.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by root on 15-6-20.
@@ -52,9 +53,11 @@ public class MovieFragment extends Fragment{
 
     //加载线程锁,
     private String mGetNewUrl = "http://api.douban.com/v2/movie/us_box";
-    private String mGetLoveMovieUrl = "http://api.douban.com/v2/movie/search?tag=爱情&start=10&count=6";
+    private String mGetLoveMovieUrl = "http://api.douban.com/v2/movie/search?tag=爱情&count=6&start=10";
     private String mGetActionMovieUrl = "http://api.douban.com/v2/movie/search?tag=动作&start=10&count=6";
     private String mGetScienceMovieUrl = "http://api.douban.com/v2/movie/search?tag=科幻&start=10&count=6";
+
+    private String mGetMovieUrl = "http://api.douban.com/v2/movie/search?count=6&tag=";
 
 
     private View mView;
@@ -90,6 +93,8 @@ public class MovieFragment extends Fragment{
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ProgressBarCircular progressBarCircular;
+
+
     private NestedScrollView mNestedScrollView;
     private FloatingActionButton fab;
 
@@ -99,6 +104,14 @@ public class MovieFragment extends Fragment{
     private LayoutRipple loveButton;
     private LayoutRipple scienceButton;
     private LayoutRipple actionButton;
+
+    private LayoutRipple loveRefreshButton;
+    private LayoutRipple scienceRefreshButton;
+    private LayoutRipple actionRefreshButton;
+
+    private ProgressBarCircular loveRefreshProgress;
+    private ProgressBarCircular scienceRefreshProgress;
+    private ProgressBarCircular actionRefreshProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -179,6 +192,44 @@ public class MovieFragment extends Fragment{
                 startActivity(intent);
             }
         });
+
+        loveRefreshProgress = (ProgressBarCircular)mView.findViewById(R.id.love_refresh_progress);
+        loveRefreshButton = (LayoutRipple)mView.findViewById(R.id.love_refresh_button);
+        loveRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLoveMovieList = new ArrayList<HashMap<String, Object>>();
+                loveRefreshProgress.setVisibility(View.VISIBLE);
+                Random random = new Random();
+                getMovieDataViaHttp(random.nextInt(100), "爱情", mLoveMovieList, 1);
+            }
+        });
+
+        scienceRefreshProgress = (ProgressBarCircular)mView.findViewById(R.id.science_refresh_progress);
+        scienceRefreshButton = (LayoutRipple)mView.findViewById(R.id.science_refresh_button);
+        scienceRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mScienceMovieList = new ArrayList<HashMap<String, Object>>();
+                scienceRefreshProgress.setVisibility(View.VISIBLE);
+                Random random = new Random();
+                getMovieDataViaHttp(random.nextInt(100), "科幻", mScienceMovieList, 2);
+            }
+        });
+
+        actionRefreshProgress = (ProgressBarCircular)mView.findViewById(R.id.action_refresh_progress);
+        actionRefreshButton = (LayoutRipple)mView.findViewById(R.id.action_refresh_button);
+        actionRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActionMovieList = new ArrayList<HashMap<String, Object>>();
+                actionRefreshProgress.setVisibility(View.VISIBLE);
+                Random random = new Random();
+
+                getMovieDataViaHttp(random.nextInt(100), "动作", mActionMovieList, 3);
+
+            }
+        });
     }
     /**
      * 初始化浮动按键
@@ -242,43 +293,22 @@ public class MovieFragment extends Fragment{
                         }
                     }
                 });
+        Random random = new Random();
 
+        getMovieDataViaHttp(random.nextInt(100), "爱情", mLoveMovieList, 0);
+        getMovieDataViaHttp(random.nextInt(100), "科幻", mScienceMovieList, 0);
+        getMovieDataViaHttp(random.nextInt(100), "动作", mActionMovieList, 0);
+    }
+
+    private void getMovieDataViaHttp(int begin, String tag, final ArrayList<HashMap<String, Object>> list, final int flag) {
         Ion.with(getActivity())
-                .load(mGetLoveMovieUrl+"&"+getResources().getString(R.string.apikey))
+                .load(mGetMovieUrl+tag+"&"+getResources().getString(R.string.apikey)+"&start="+String.valueOf(begin))
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         try {
-                            new Thread(new DecodeJsonSecondThead(result, getActivity(), mLoveMovieList)).start();
-                        } catch (Exception ee) {
-                            ee.printStackTrace();
-                        }
-                    }
-                });
-
-        Ion.with(getActivity())
-                .load(mGetActionMovieUrl+"&"+getResources().getString(R.string.apikey))
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        try {
-                            new Thread(new DecodeJsonSecondThead(result, getActivity(), mActionMovieList)).start();
-                        } catch (Exception ee) {
-                            ee.printStackTrace();
-                        }
-                    }
-                });
-
-        Ion.with(getActivity())
-                .load(mGetScienceMovieUrl+"&"+getResources().getString(R.string.apikey))
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        try {
-                            new Thread(new DecodeJsonSecondThead(result, getActivity(), mScienceMovieList)).start();
+                            new Thread(new DecodeJsonSecondThead(result, getActivity(), list, flag)).start();
                         } catch (Exception ee) {
                             ee.printStackTrace();
                         }
@@ -291,16 +321,30 @@ public class MovieFragment extends Fragment{
      * */
 
     private void setDataForLayout() {
+
+        setDataForLoveMovieLayout();
+
+        setDataForScienceMovieLayout();
+
+        setDataForActionMovieLayout();
+
+    }
+
+    private void setDataForLoveMovieLayout() {
         View view = mView.findViewById(R.id.love_layout_id);
         SetLayoutData setLayoutData = new SetLayoutData(getActivity(), view, mLoveMovieList);
         setLayoutData.startDraw();
+    }
 
-        view = mView.findViewById(R.id.science_layout_id);
-        setLayoutData = new SetLayoutData(getActivity(), view, mScienceMovieList);
+    private void setDataForScienceMovieLayout() {
+        View view = mView.findViewById(R.id.science_layout_id);
+        SetLayoutData setLayoutData = new SetLayoutData(getActivity(), view, mScienceMovieList);
         setLayoutData.startDraw();
+    }
 
-        view = mView.findViewById(R.id.action_layout_id);
-        setLayoutData = new SetLayoutData(getActivity(), view, mActionMovieList);
+    private void setDataForActionMovieLayout() {
+        View view = mView.findViewById(R.id.action_layout_id);
+        SetLayoutData setLayoutData = new SetLayoutData(getActivity(), view, mActionMovieList);
         setLayoutData.startDraw();
     }
     /**
@@ -380,11 +424,13 @@ public class MovieFragment extends Fragment{
         private JsonObject result;
         private Context mContext;
         private ArrayList<HashMap<String, Object>> mList;
+        private int mFlag;
 
-        public DecodeJsonSecondThead(JsonObject result, Context mContext, ArrayList<HashMap<String, Object>> mList) {
+        public DecodeJsonSecondThead(JsonObject result, Context mContext, ArrayList<HashMap<String, Object>> mList, int flag) {
             this.result = result;
             this.mContext = mContext;
             this.mList = mList;
+            this.mFlag = flag;
         }
 
         @Override
@@ -410,6 +456,7 @@ public class MovieFragment extends Fragment{
                 }
                 Message message = Message.obtain();
                 message.what = REFRESH_FINISH;
+                message.obj = mFlag;
                 handler.sendMessage(message);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -423,17 +470,32 @@ public class MovieFragment extends Fragment{
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == 1) {
+            if (msg.what == 1 && msg.obj == 1) {
+                //刷性单一页面
+                setDataForLoveMovieLayout();
+                loveRefreshProgress.setVisibility(View.GONE);
+            } else if (msg.what == 1 && msg.obj == 2) {
+                setDataForScienceMovieLayout();
+                scienceRefreshProgress.setVisibility(View.GONE);
+            } else if (msg.what == 1 && msg.obj == 3) {
+                setDataForActionMovieLayout();
+                actionRefreshProgress.setVisibility(View.GONE);
+            } else {
+                /**
+                 * 刷新全部页面
+                 * */
+                if (msg.what == 1) {
                     mRefreshCount++;
-            }
-            if (mRefreshCount==4) {
-                mRefreshCount = 0;
-                initView(mInflater);
-                setDataForLayout();
-                mSwipeRefreshLayout.setRefreshing(false);
-                progressBarCircular.setVisibility(View.GONE);
-                mBoxDateTv.setText("北美票房: "+BoxDate);
-                mNestedScrollView.setVisibility(View.VISIBLE);
+                }
+                if (mRefreshCount == 4) {
+                    mRefreshCount = 0;
+                    initView(mInflater);
+                    setDataForLayout();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    progressBarCircular.setVisibility(View.GONE);
+                    mBoxDateTv.setText("北美票房: " + BoxDate);
+                    mNestedScrollView.setVisibility(View.VISIBLE);
+                }
             }
         }
     };

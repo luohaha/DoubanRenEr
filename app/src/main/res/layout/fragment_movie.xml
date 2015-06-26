@@ -92,16 +92,54 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         >
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="left|top"
-                            android:textSize="18sp"
-                            android:textColor="?attr/colorPrimaryDark"
-                            android:layout_margin="12dp"
-                            android:typeface="serif"
-                            android:text="爱情"
-                            />
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left|top"
+                                android:textSize="18sp"
+                                android:layout_toLeftOf="@+id/love_refresh_button"
+                                android:textColor="?attr/colorPrimaryDark"
+                                android:layout_margin="12dp"
+                                android:typeface="serif"
+                                android:text="爱情"
+                                />
+                            <com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular
+                                android:id="@+id/love_refresh_progress"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:visibility="gone"
+                                android:textSize="24sp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="2dp"
+                                android:layout_centerInParent="true"
+                                android:layout_centerHorizontal="true" />
+                            <com.lyx.doubanrener.doubanrener.MaterialDesign.Other.LayoutRipple
+                                android:id="@+id/love_refresh_button"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:background="@color/white"
+                                android:layout_centerVertical="true" >
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:textColor="@color/light_blue"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerInParent="true"
+                                    android:gravity="center"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:textSize="16sp"
+                                    android:typeface="serif"
+                                    android:text="换一批" />
+                            </com.lyx.doubanrener.doubanrener.MaterialDesign.Other.LayoutRipple>
+                            </RelativeLayout>
 
                         <include
                             android:id="@+id/love_layout_id"
@@ -148,16 +186,54 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         >
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="left|top"
-                            android:textSize="18sp"
-                            android:textColor="?attr/colorPrimaryDark"
-                            android:layout_margin="12dp"
-                            android:typeface="serif"
-                            android:text="科幻"
-                            />
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left|top"
+                                android:textSize="18sp"
+                                android:layout_toLeftOf="@+id/science_refresh_button"
+                                android:textColor="?attr/colorPrimaryDark"
+                                android:layout_margin="12dp"
+                                android:typeface="serif"
+                                android:text="科幻"
+                                />
+                            <com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular
+                                android:id="@+id/science_refresh_progress"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:visibility="gone"
+                                android:textSize="24sp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="2dp"
+                                android:layout_centerInParent="true"
+                                android:layout_centerHorizontal="true" />
+                            <com.lyx.doubanrener.doubanrener.MaterialDesign.Other.LayoutRipple
+                                android:id="@+id/science_refresh_button"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:background="@color/white"
+                                android:layout_centerVertical="true" >
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:textColor="@color/light_blue"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:gravity="center"
+                                    android:layout_marginRight="5dp"
+                                    android:textSize="16sp"
+                                    android:typeface="serif"
+                                    android:text="换一批" />
+                            </com.lyx.doubanrener.doubanrener.MaterialDesign.Other.LayoutRipple>
+                        </RelativeLayout>
                         <include
                             android:id="@+id/science_layout_id"
                             layout="@layout/love_layout"/>
@@ -203,16 +279,54 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         >
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="left|top"
-                            android:textSize="18sp"
-                            android:textColor="?attr/colorPrimaryDark"
-                            android:layout_margin="12dp"
-                            android:typeface="serif"
-                            android:text="动作"
-                            />
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left|top"
+                                android:textSize="18sp"
+                                android:layout_toLeftOf="@+id/action_refresh_button"
+                                android:textColor="?attr/colorPrimaryDark"
+                                android:layout_margin="12dp"
+                                android:typeface="serif"
+                                android:text="动作"
+                                />
+                            <com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular
+                                android:id="@+id/action_refresh_progress"
+                                android:visibility="gone"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:textSize="24sp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="2dp"
+                                android:layout_centerInParent="true"
+                                android:layout_centerHorizontal="true" />
+                            <com.lyx.doubanrener.doubanrener.MaterialDesign.Other.LayoutRipple
+                                android:id="@+id/action_refresh_button"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:background="@color/white"
+                                android:layout_centerVertical="true" >
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:textColor="@color/light_blue"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerInParent="true"
+                                    android:gravity="center"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:textSize="16sp"
+                                    android:typeface="serif"
+                                    android:text="换一批" />
+                            </com.lyx.doubanrener.doubanrener.MaterialDesign.Other.LayoutRipple>
+                        </RelativeLayout>
                         <include
                             android:id="@+id/action_layout_id"
                             layout="@layout/love_layout"/>
@@ -259,16 +373,5 @@
             android:layout_marginBottom="25dp" />
     </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_shadow_size"
-        android:clickable="true"
-        android:src="@drawable/plus"
-        app:layout_anchor="@id/love_cardview"
-        app:layout_anchorGravity="top|right|end"
-        app:layout_scrollFlags="scroll"
-        app:layout_collapseMode="parallax"
-        />
 
 </android.support.design.widget.CoordinatorLayout>
