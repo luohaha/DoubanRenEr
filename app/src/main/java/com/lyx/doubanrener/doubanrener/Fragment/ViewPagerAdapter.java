@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    final int PAGE_COUNT =4;
+    final int PAGE_COUNT =2;
     private String titles[] ;
 
     public ViewPagerAdapter(FragmentManager fm, String[] titles2) {
@@ -21,11 +21,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new MovieFragment();
             case 1:
-                return SampleFragment.newInstance(position);
-            case 2:
-                return SampleFragment.newInstance(position);
-            case 3:
-                return SampleFragment.newInstance(position);
+                return new PlanFragment();
         }
         return null;
     }

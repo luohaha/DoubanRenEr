@@ -175,12 +175,12 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
     <android.support.design.widget.FloatingActionButton
-        android:onClick="checkin"
+        android:id="@+id/activity_movie_item_float_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_shadow_size"
         android:clickable="true"
-        android:src="@drawable/plus"
+        android:src="@drawable/ic_add_shopping_cart_white_24dp"
         app:layout_anchor="@id/activity_movie_item_appbar"
         app:layout_anchorGravity="bottom|right|end"/>
 </android.support.design.widget.CoordinatorLayout>

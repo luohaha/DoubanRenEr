@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="card_back">#E3E3E3</color>
+    <color name="card_back">#EEEEEE</color>
     <color name="white">#FFFFFF</color>
     <color name="red">#bf360c</color>
     <color name="ripple_red">#ffbf5232</color>
@@ -20,5 +20,7 @@
     <color name="black_translucent">#80000000</color>
 
     <color name="black">#000000</color>
+
+    <color name="hui">#999999</color>
 
 </resources>

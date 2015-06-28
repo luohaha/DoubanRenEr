@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/card_back">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/plan_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/fragment_movie_box_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:background="@color/white">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/hui"
+                android:textSize="14sp"
+                android:typeface="monospace"
+                android:text="当前计划: (左滑标记已看)"
+                />
+        </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drag_drop_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:background="@color/card_back"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:background="@color/white">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/hui"
+                android:textSize="14sp"
+                android:typeface="monospace"
+                android:text="最近观看: "
+                />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/drag_drop_recycler_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

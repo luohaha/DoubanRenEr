@@ -1,6 +1,7 @@
 package com.lyx.doubanrener.doubanrener.MovieActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.lyx.doubanrener.doubanrener.R;
+import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
 
 /**
  * Created by root on 15-6-21.
@@ -95,6 +97,8 @@ public class MovieActivity extends ActionBarActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_search:
+                Intent intent = new Intent(MovieActivity.this, SearchActivity.class);
+                startActivity(intent);
                 return true;
         }
 

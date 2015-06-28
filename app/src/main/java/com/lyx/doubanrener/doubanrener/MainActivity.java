@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
 
     ViewPager pager;
-    private String titles[] = new String[]{"电影", "读书", "音乐", "其他"};
+    private String titles[] = new String[]{"电影", "计划"};
     private Toolbar toolbar;
 
     TabLayout slidingTabLayout;

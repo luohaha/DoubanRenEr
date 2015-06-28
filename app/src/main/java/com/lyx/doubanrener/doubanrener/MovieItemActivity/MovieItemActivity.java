@@ -1,12 +1,15 @@
 package com.lyx.doubanrener.doubanrener.MovieItemActivity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +27,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
 import com.lyx.doubanrener.doubanrener.MovieItemActivity.Adapters.PeopleFaceAdapter;
 import com.lyx.doubanrener.doubanrener.MoviePeopleActivity.MoviePeopleActivity;
@@ -50,6 +54,8 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
     private PeopleFaceAdapter mPeopleFaceAdapter;
     private NestedScrollView mNestedScrollView;
 
+    private FloatingActionButton mFloatingActionButton;
+
     private String mItemUrl = "http://api.douban.com/v2/movie/subject/";
     private String mMovieId;
 
@@ -58,6 +64,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
      * UI data
      * */
     private String imageView_data;
+    private String imageview_data_small;
     private String collapsingToolbarLayout_data;
     private String mBaseInfoTv_data;
     private String mSummaryTv_data;
@@ -81,7 +88,6 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
         mSummaryTv = (TextView) findViewById(R.id.activity_movie_item_summary_tv);
         mNestedScrollView = (NestedScrollView) findViewById(R.id.activity_movie_item_scrollview);
 
-
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_movie_item_people_list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -93,6 +99,42 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
          * set adapter
          * */
         initPeopleFaceAdapter();
+    }
+    /**
+     * 初始化FloatingActionButton
+     * */
+    private void initFloatingActionButton() {
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.activity_movie_item_float_button);
+        DatabaseClient databaseClient = new DatabaseClient(MovieItemActivity.this);
+        Cursor cursor = databaseClient.queryData("todopage", "doubanid=?", new String[]{mMovieId});
+        if (cursor == null || cursor.getCount() == 0) {
+            /**
+             * 还未加入计划
+             * */
+            mFloatingActionButton.setImageResource(R.drawable.ic_add_shopping_cart_white_24dp);
+            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (collapsingToolbarLayout_data != null && mMovieId != null) {
+                        DatabaseClient databaseClient = new DatabaseClient(MovieItemActivity.this);
+                        ContentValues values = new ContentValues();
+                        values.put("name", collapsingToolbarLayout_data);
+                        values.put("doubanid", mMovieId);
+                        values.put("image", imageview_data_small);
+                        databaseClient.insertData("todopage", values);
+                        Toast.makeText(getApplicationContext(), "加入电影计划~~", Toast.LENGTH_SHORT).show();
+                        mFloatingActionButton.setImageResource(R.drawable.ic_bookmark_white_24dp);
+                        mFloatingActionButton.setOnClickListener(null);
+                    }
+                }
+            });
+        } else {
+            /**
+             * 加入计划
+             * */
+            mFloatingActionButton.setImageResource(R.drawable.ic_bookmark_white_24dp);
+        }
+        cursor.close();
     }
     /**
      * 初始化toolbar
@@ -161,7 +203,11 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
                 if (result == null) {
                     Toast.makeText(MovieItemActivity.this, "网络错误~~", Toast.LENGTH_SHORT).show();
                 } else {
-                    imageView_data = result.get("images").getAsJsonObject().get("large").getAsString();
+                    JsonObject images = result.get("images").getAsJsonObject();
+                    imageView_data = images.get("large").getAsString();
+                    imageview_data_small = images.get("small").getAsString();
+
+
                     collapsingToolbarLayout_data = result.get("title").getAsString();
                     /**
                      * 基本信息栏目读取
@@ -273,6 +319,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
         progressBarCircular.setVisibility(View.GONE);
         mNestedScrollView.smoothScrollTo(0, 0);
         mNestedScrollView.setVisibility(View.VISIBLE);
+        initFloatingActionButton();
     }
 
     /**

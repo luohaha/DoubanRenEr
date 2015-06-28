@@ -26,27 +26,32 @@ public class SetLayoutData {
     public void startDraw() {
         SetItemData setItemData = null;
         View view = mView.findViewById(R.id.love_item_1);
-        setItemData = new SetItemData(this.mContext, view, mList.get(0));
-        setItemData.begin();
+        /**
+         * fix bug:
+         * */
+        if (mList.size() != 0) {
+            setItemData = new SetItemData(this.mContext, view, mList.get(0));
+            setItemData.begin();
 
-        view = mView.findViewById(R.id.love_item_2);
-        setItemData = new SetItemData(this.mContext, view, mList.get(1));
-        setItemData.begin();
+            view = mView.findViewById(R.id.love_item_2);
+            setItemData = new SetItemData(this.mContext, view, mList.get(1));
+            setItemData.begin();
 
-        view = mView.findViewById(R.id.love_item_3);
-        setItemData = new SetItemData(this.mContext, view, mList.get(2));
-        setItemData.begin();
+            view = mView.findViewById(R.id.love_item_3);
+            setItemData = new SetItemData(this.mContext, view, mList.get(2));
+            setItemData.begin();
 
-        view = mView.findViewById(R.id.love_item_4);
-        setItemData = new SetItemData(this.mContext, view, mList.get(3));
-        setItemData.begin();
+            view = mView.findViewById(R.id.love_item_4);
+            setItemData = new SetItemData(this.mContext, view, mList.get(3));
+            setItemData.begin();
 
-        view = mView.findViewById(R.id.love_item_5);
-        setItemData = new SetItemData(this.mContext, view, mList.get(4));
-        setItemData.begin();
+            view = mView.findViewById(R.id.love_item_5);
+            setItemData = new SetItemData(this.mContext, view, mList.get(4));
+            setItemData.begin();
 
-        view = mView.findViewById(R.id.love_item_6);
-        setItemData = new SetItemData(this.mContext, view, mList.get(5));
-        setItemData.begin();
+            view = mView.findViewById(R.id.love_item_6);
+            setItemData = new SetItemData(this.mContext, view, mList.get(5));
+            setItemData.begin();
+        }
     }
 }

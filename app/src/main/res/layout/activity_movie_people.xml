@@ -144,4 +144,5 @@
         android:src="@drawable/plus"
         app:layout_anchor="@id/activity_movie_people_appbar"
         app:layout_anchorGravity="bottom|right|end"/>
+
 </android.support.design.widget.CoordinatorLayout>
