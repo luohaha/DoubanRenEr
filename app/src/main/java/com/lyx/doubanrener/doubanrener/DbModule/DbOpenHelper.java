@@ -37,8 +37,15 @@ public class DbOpenHelper extends SQLiteOpenHelper {
                 " image varchar(64), doubanid varchar(64))";
         db.execSQL(sql);
         sql = "create table donepage(id integer primary key autoincrement, name varchar(64)," +
+                " image varchar(64), doubanid varchar(64), islove varchar(16))";
+        db.execSQL(sql);
+        sql = "create table lovemoviepage(id integer primary key autoincrement, name varchar(64)," +
                 " image varchar(64), doubanid varchar(64))";
         db.execSQL(sql);
+        sql = "create table lovepeoplepage(id integer primary key autoincrement, name varchar(64)," +
+                " image varchar(64), doubanid varchar(64))";
+        db.execSQL(sql);
+
     }
 
     @Override

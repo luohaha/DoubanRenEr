@@ -64,7 +64,7 @@
                 android:textColor="@color/hui"
                 android:textSize="14sp"
                 android:typeface="monospace"
-                android:text="最近观看: "
+                android:text="最近观看: (长按标记喜欢)"
                 />
         </LinearLayout>
 

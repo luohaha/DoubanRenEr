@@ -23,7 +23,8 @@
     android:background="@color/white">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp">
+        android:layout_height="56dp"
+        android:background="@drawable/item_press">
         <com.lyx.doubanrener.doubanrener.MaterialDesign.RoundImageView
             android:id="@+id/dd_image"
             android:layout_width="40dp"
@@ -53,6 +54,6 @@
         android:layout_margin="18dp"
         android:layout_gravity="center_vertical|right"
         android:scaleType="center"
-        android:src="@drawable/left" />
+         />
         </RelativeLayout>
 </FrameLayout>

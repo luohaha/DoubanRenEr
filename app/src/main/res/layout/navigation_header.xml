@@ -6,20 +6,22 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
+    android:id="@+id/nav_head_backgroud"
     android:theme="@style/ThemeOverlay.AppCompat.Light">
 
     <ImageView
+        android:id="@+id/nav_head_imageview"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_launcher"/>
 
     <TextView
+        android:id="@+id/nav_head_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="XuYisheng"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp"/>
 

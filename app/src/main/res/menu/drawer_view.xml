@@ -4,31 +4,30 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_records"
             android:icon="@drawable/plus"
-            android:title="CC Talk"/>
+            android:title="观看记录"/>
         <item
-            android:id="@+id/nav_messages"
+            android:id="@+id/nav_peoples"
             android:icon="@drawable/plus"
-            android:title="HJ Class"/>
+            android:title="喜欢的影人"/>
         <item
-            android:id="@+id/nav_friends"
+            android:id="@+id/nav_movies"
             android:icon="@drawable/plus"
-            android:title="Words"/>
-        <item
-            android:id="@+id/nav_discussion"
-            android:icon="@drawable/plus"
-            android:title="Big HJ"/>
+            android:title="喜欢的电影"/>
+
     </group>
 
-    <item android:title="Version">
+    <item android:title="设置">
         <menu>
             <item
+                android:id="@+id/nav_setting"
                 android:icon="@drawable/plus"
-                android:title="Android"/>
+                android:title="设置页面"/>
             <item
+                android:id="@+id/nav_version"
                 android:icon="@drawable/plus"
-                android:title="iOS"/>
+                android:title="版本介绍"/>
         </menu>
     </item>
 

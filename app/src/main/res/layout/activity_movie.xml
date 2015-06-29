@@ -1,9 +1,11 @@
-<android.support.v4.widget.DrawerLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_movie_drawer_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/card_back"
+    android:fitsSystemWindows="true">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,6 +14,8 @@
             android:id="@+id/activity_movie_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:title="分类"
+            android:title="分类"
             android:background="?attr/colorPrimaryDark" />
         <android.support.design.widget.TabLayout
             android:id="@+id/activity_movie_sliding_tabs"
@@ -27,11 +31,4 @@
             android:layout_weight="1"
             android:background="@android:color/white" />
     </android.support.design.widget.AppBarLayout>
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nv_main_navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/drawer_view"/>
-</android.support.v4.widget.DrawerLayout>
+</android.support.design.widget.CoordinatorLayout>

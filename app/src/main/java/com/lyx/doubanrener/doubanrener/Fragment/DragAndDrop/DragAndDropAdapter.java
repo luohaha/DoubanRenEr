@@ -39,6 +39,8 @@ public class DragAndDropAdapter extends RecyclerView.Adapter<DragAndDropAdapter.
     private ArrayList<HashMap<String, Object>> mList;
     private Context mContext;
     private View mView;
+    private MyItemClickListener mItemClickListener = null;
+    private MyItemLongClickListener mItemLongClickListener = null;
     /**
      * Listener for manual initiation of a drag.
      */
@@ -59,11 +61,31 @@ public class DragAndDropAdapter extends RecyclerView.Adapter<DragAndDropAdapter.
         this.mContext = context;
         this.mView = view;
     }
+    //define interface
+    public interface MyItemClickListener {
+        public void onItemClick(View view,int postion);
+    }
+
+    public interface MyItemLongClickListener {
+        public void onItemLongClick(View view,int postion);
+    }
+
+    /**
+     * 设置Item点击监听
+     * @param listener
+     */
+    public void setOnItemClickListener(MyItemClickListener listener){
+        this.mItemClickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(MyItemLongClickListener listener){
+        this.mItemLongClickListener = listener;
+    }
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drag_drop_item, parent, false);
 
-        ItemViewHolder itemViewHolder = new ItemViewHolder(view);
+        ItemViewHolder itemViewHolder = new ItemViewHolder(view, mItemClickListener, mItemLongClickListener);
         itemViewHolder.textView = (TextView) view.findViewById(R.id.dd_text);
         itemViewHolder.handleView = (ImageView) view.findViewById(R.id.dd_handle);
         itemViewHolder.imageView = (RoundImageView) view.findViewById(R.id.dd_image);
@@ -80,6 +102,7 @@ public class DragAndDropAdapter extends RecyclerView.Adapter<DragAndDropAdapter.
                 .error(R.color.grey)
                 .load((String) mList.get(position).get("image"));
 // Start a drag whenever the handle view it touched
+        holder.handleView.setImageResource(R.drawable.left);
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -111,6 +134,7 @@ public class DragAndDropAdapter extends RecyclerView.Adapter<DragAndDropAdapter.
         }
         values.put("doubanid", mList.get(position).get("doubanid").toString());
         values.put("name", mList.get(position).get("name").toString());
+        values.put("islove", "no");
         databaseClient.insertData("donepage", values);
         Snackbar.make(mView, "已经观看 : "+mList.get(position).get("name").toString(), Snackbar.LENGTH_LONG)
                 .show();
@@ -132,12 +156,19 @@ public class DragAndDropAdapter extends RecyclerView.Adapter<DragAndDropAdapter.
      * "handle" view that initiates a drag event when touched.
      */
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements
-            ItemTouchHelperViewHolder {
+            ItemTouchHelperViewHolder, View.OnClickListener, View.OnLongClickListener {
         public TextView textView;
         public ImageView handleView;
         public RoundImageView imageView;
-        public ItemViewHolder(View itemView) {
+        private MyItemClickListener mListener;
+        private MyItemLongClickListener mLongClickListener;
+
+        public ItemViewHolder(View itemView, MyItemClickListener listener, MyItemLongClickListener longListener) {
             super(itemView);
+            this.mListener = listener;
+            this.mLongClickListener = longListener;
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
         }
         @Override
@@ -147,6 +178,21 @@ public class DragAndDropAdapter extends RecyclerView.Adapter<DragAndDropAdapter.
         @Override
         public void onItemClear() {
             itemView.setBackgroundColor(Color.WHITE);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(mListener != null){
+                mListener.onItemClick(v,getPosition());
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(mLongClickListener != null){
+                mLongClickListener.onItemLongClick(v, getPosition());
+            }
+            return true;
         }
     }
 }

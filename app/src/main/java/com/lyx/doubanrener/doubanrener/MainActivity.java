@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 
 
 import com.lyx.doubanrener.doubanrener.Fragment.ViewPagerAdapter;
+import com.lyx.doubanrener.doubanrener.MultiDisplayActivity.MultiDisplayActivity;
 import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
 
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private NavigationView mNavigationView;
 
     ViewPager pager;
     private String titles[] = new String[]{"电影", "计划"};
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
          * toolbar 标题栏
          * */
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -64,6 +68,31 @@ public class MainActivity extends AppCompatActivity {
 
         drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
         mDrawerLayout.setDrawerListener(drawerToggle);
+
+        mNavigationView = (NavigationView)findViewById(R.id.nv_main_navigation);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_movies:
+                        Intent intent = new Intent(MainActivity.this, MultiDisplayActivity.class);
+                        intent.putExtra("type", "movies");
+                        startActivity(intent);
+                        break;
+                    case R.id.nav_peoples:
+                        Intent intent2 = new Intent(MainActivity.this, MultiDisplayActivity.class);
+                        intent2.putExtra("type", "peoples");
+                        startActivity(intent2);
+                        break;
+                    case R.id.nav_records:
+                        Intent intent3 = new Intent(MainActivity.this, MultiDisplayActivity.class);
+                        intent3.putExtra("type", "records");
+                        startActivity(intent3);
+                        break;
+                }
+                return true;
+            }
+        });
 
         /**
          * 设置整个的主题颜色
@@ -120,5 +149,6 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
 
 }

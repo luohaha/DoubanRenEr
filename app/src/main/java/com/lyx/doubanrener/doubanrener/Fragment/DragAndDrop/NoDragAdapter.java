@@ -1,6 +1,7 @@
 package com.lyx.doubanrener.doubanrener.Fragment.DragAndDrop;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
+import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.RoundImageView;
 import com.lyx.doubanrener.doubanrener.R;
 
@@ -69,7 +71,18 @@ public class NoDragAdapter extends RecyclerView.Adapter<NoDragAdapter.ViewHolder
                 .placeholder(R.color.light)
                 .error(R.color.red)
                 .load((String) mList.get(position).get("image"));
-        holder.handler.setVisibility(View.GONE);
+
+        //DatabaseClient databaseClient = new DatabaseClient(mContext);
+        //Cursor cursor = databaseClient.queryData("donepage", "doubanid", new String[]{mList.get(position).get("doubanid").toString()});
+        String isLove = mList.get(position).get("islove").toString();
+        if (isLove == null || isLove.equals("") || isLove.equals("no")) {
+            holder.handler.setVisibility(View.GONE);
+        } else if (isLove.equals("yes")){
+            holder.handler.setVisibility(View.VISIBLE);
+            holder.handler.setBackgroundResource(R.drawable.ic_favorite_grey600_24dp);
+        } else {
+            holder.handler.setVisibility(View.GONE);
+        }
     }
 
     @Override

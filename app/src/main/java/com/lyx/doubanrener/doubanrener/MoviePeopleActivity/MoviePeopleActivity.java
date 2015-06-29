@@ -1,13 +1,16 @@
 package com.lyx.doubanrener.doubanrener.MoviePeopleActivity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +28,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
 import com.lyx.doubanrener.doubanrener.MovieItemActivity.MovieItemActivity;
 import com.lyx.doubanrener.doubanrener.MoviePeopleActivity.Adapters.MovieFaceAdapter;
@@ -50,6 +54,8 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
     private LinearLayoutManager mLinearLayoutManager;
     private MovieFaceAdapter mMovieFaceAdapter;
     private NestedScrollView mNestedScrollView;
+
+    private FloatingActionButton mFloatingActionButton;
 
     private String mItemUrl = "http://api.douban.com/v2/movie/celebrity/";
     private String mPeopleId;
@@ -95,12 +101,55 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
         initMovieFaceAdapter();
     }
     /**
+     * 初始化FloatingActionButton
+     * */
+    private void initFloatingActionButton() {
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.activity_movie_people_float_button);
+        DatabaseClient databaseClient = new DatabaseClient(MoviePeopleActivity.this);
+        Cursor cursor = databaseClient.queryData("lovepeoplepage", "doubanid=?", new String[]{mPeopleId});
+        if (cursor == null || cursor.getCount() == 0) {
+            /**
+             * 还未加入
+             * */
+            mFloatingActionButton.setImageResource(R.drawable.ic_favorite_outline_white_24dp);
+            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (collapsingToolbarLayout_data != null && mPeopleId != null) {
+                        DatabaseClient databaseClient = new DatabaseClient(MoviePeopleActivity.this);
+                        ContentValues values = new ContentValues();
+                        values.put("name", collapsingToolbarLayout_data);
+                        values.put("doubanid", mPeopleId);
+                        values.put("image", imageView_data);
+                        databaseClient.insertData("lovepeoplepage", values);
+                        Toast.makeText(getApplicationContext(), "加入喜欢列表~~", Toast.LENGTH_SHORT).show();
+                        mFloatingActionButton.setImageResource(R.drawable.ic_favorite_white_24dp);
+                        mFloatingActionButton.setOnClickListener(null);
+                    }
+                }
+            });
+        } else {
+            /**
+             * 加入计划
+             * */
+            mFloatingActionButton.setImageResource(R.drawable.ic_favorite_white_24dp);
+            mFloatingActionButton.setOnClickListener(null);
+        }
+        cursor.close();
+    }
+    /**
      * 初始化toolbar
      * */
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.activity_movie_people_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     /**
      *初始化progress
@@ -224,6 +273,7 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
         progressBarCircular.setVisibility(View.GONE);
         mNestedScrollView.smoothScrollTo(0,0);
         mNestedScrollView.setVisibility(View.VISIBLE);
+        initFloatingActionButton();
     }
 
     /**

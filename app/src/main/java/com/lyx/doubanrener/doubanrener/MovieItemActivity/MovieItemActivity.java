@@ -64,7 +64,6 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
      * UI data
      * */
     private String imageView_data;
-    private String imageview_data_small;
     private String collapsingToolbarLayout_data;
     private String mBaseInfoTv_data;
     private String mSummaryTv_data;
@@ -120,7 +119,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
                         ContentValues values = new ContentValues();
                         values.put("name", collapsingToolbarLayout_data);
                         values.put("doubanid", mMovieId);
-                        values.put("image", imageview_data_small);
+                        values.put("image", imageView_data);
                         databaseClient.insertData("todopage", values);
                         Toast.makeText(getApplicationContext(), "加入电影计划~~", Toast.LENGTH_SHORT).show();
                         mFloatingActionButton.setImageResource(R.drawable.ic_bookmark_white_24dp);
@@ -143,6 +142,12 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
         toolbar = (Toolbar) findViewById(R.id.activity_movie_item_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     /**
      *初始化progress
@@ -205,8 +210,6 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
                 } else {
                     JsonObject images = result.get("images").getAsJsonObject();
                     imageView_data = images.get("large").getAsString();
-                    imageview_data_small = images.get("small").getAsString();
-
 
                     collapsingToolbarLayout_data = result.get("title").getAsString();
                     /**

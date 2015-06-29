@@ -73,7 +73,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                card_view:cardElevation="4dp">
+                >
                 <LinearLayout
                     android:layout_gravity="bottom"
                     android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                card_view:cardElevation="4dp">
+                >
                 <LinearLayout
                     android:layout_gravity="bottom"
                     android:layout_width="match_parent"
@@ -147,7 +147,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                card_view:cardElevation="4dp">
+                >
                 <LinearLayout
                     android:layout_gravity="bottom"
                     android:layout_width="match_parent"

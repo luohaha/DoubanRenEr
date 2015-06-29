@@ -72,7 +72,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                card_view:cardElevation="4dp">
+                >
                 <LinearLayout
                     android:layout_gravity="bottom"
                     android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                card_view:cardElevation="4dp">
+                >
                 <LinearLayout
                     android:layout_gravity="bottom"
                     android:layout_width="match_parent"
@@ -137,11 +137,12 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/activity_movie_people_float_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_shadow_size"
         android:clickable="true"
-        android:src="@drawable/plus"
+        android:src="@drawable/ic_favorite_outline_white_24dp"
         app:layout_anchor="@id/activity_movie_people_appbar"
         app:layout_anchorGravity="bottom|right|end"/>
 
