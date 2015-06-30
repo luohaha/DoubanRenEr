@@ -20,6 +20,8 @@ import android.view.View;
 import com.lyx.doubanrener.doubanrener.R;
 import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
 
+import java.util.HashMap;
+
 /**
  * Created by root on 15-6-21.
  */
@@ -31,6 +33,10 @@ public class MovieActivity extends ActionBarActivity {
     private Toolbar toolbar;
 
     TabLayout slidingTabLayout;
+
+    private HashMap<String, Integer> MoviehashMap;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +60,14 @@ public class MovieActivity extends ActionBarActivity {
             });
             toolbar.setTitle("分类");
         }
+        initHashMap();
         /**
          * 获取viewpager,和tabs的布局
          * */
         pager = (ViewPager) findViewById(R.id.activity_movie_viewpager);
         slidingTabLayout = (TabLayout) findViewById(R.id.activity_movie_sliding_tabs);
         pager.setAdapter(new MovieViewPagerAdapter(getSupportFragmentManager(), titles));
-        pager.setCurrentItem(getIntent().getIntExtra("page", 0));
+        pager.setCurrentItem(MoviehashMap.get(getIntent().getStringExtra("page")));
 
         slidingTabLayout.setupWithViewPager(pager);
         slidingTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -71,6 +78,19 @@ public class MovieActivity extends ActionBarActivity {
          * */
         setColor();
 
+    }
+    private void initHashMap() {
+        MoviehashMap = new HashMap<String, Integer>();
+        MoviehashMap.put("top250", 0);
+        MoviehashMap.put("热门", 1);
+        MoviehashMap.put("华语", 2);
+        MoviehashMap.put("欧美", 3);
+        MoviehashMap.put("动作", 4);
+        MoviehashMap.put("喜剧", 5);
+        MoviehashMap.put("爱情", 6);
+        MoviehashMap.put("科幻", 7);
+        MoviehashMap.put("悬疑", 8);
+        MoviehashMap.put("恐怖", 9);
     }
     /**
      * 设置整个的主题颜色

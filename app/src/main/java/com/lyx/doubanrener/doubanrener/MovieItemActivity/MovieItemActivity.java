@@ -313,7 +313,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
     private void RefreshUI() {
         Ion.with(imageView)
                 .placeholder(R.color.light)
-                .error(R.color.red)
+                .error(R.color.grey)
                 .load(imageView_data);
         collapsingToolbarLayout.setTitle(collapsingToolbarLayout_data);
         mBaseInfoTv.setText(mBaseInfoTv_data);

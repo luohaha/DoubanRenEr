@@ -45,6 +45,12 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         sql = "create table lovepeoplepage(id integer primary key autoincrement, name varchar(64)," +
                 " image varchar(64), doubanid varchar(64))";
         db.execSQL(sql);
+        sql = "create table tagspage(id integer primary key autoincrement, one varchar(16)," +
+                " two varchar(16), three varchar(16))";
+        db.execSQL(sql);
+
+        sql = "insert into tagspage (one, two, three) values ('爱情', '科幻', '动作')";
+        db.execSQL(sql);
 
     }
 

@@ -1,8 +1,10 @@
 package com.lyx.doubanrener.doubanrener;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,17 +20,29 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
+import com.koushikdutta.ion.Ion;
+import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.Fragment.ViewPagerAdapter;
 import com.lyx.doubanrener.doubanrener.MultiDisplayActivity.MultiDisplayActivity;
 import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
+import com.lyx.doubanrener.doubanrener.SettingActivity.SettingActivity;
+import com.lyx.doubanrener.doubanrener.SettingActivity.VersionActivity;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private long exitTime;
+
+    private ImageView mBack;
+    private String mBackImage;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView mNavigationView;
@@ -89,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
                         intent3.putExtra("type", "records");
                         startActivity(intent3);
                         break;
+                    case R.id.nav_setting:
+                        Intent intent4 = new Intent(MainActivity.this, SettingActivity.class);
+                        startActivity(intent4);
+                        break;
+                    case R.id.nav_version:
+                        Intent intent5 = new Intent(MainActivity.this, VersionActivity.class);
+                        startActivity(intent5);
+                        break;
                 }
                 return true;
             }
@@ -99,7 +121,21 @@ public class MainActivity extends AppCompatActivity {
          * */
         setColor();
 
-
+        mBack = (ImageView) findViewById(R.id.nav_head_backgroud);
+        DatabaseClient databaseClient = new DatabaseClient(this);
+        Cursor cursor = databaseClient.queryLastPage("donepage", "1");
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                mBackImage = cursor.getString(cursor.getColumnIndex("image"));
+            }
+            Ion.with(mBack)
+                    .placeholder(R.color.colorPrimaryDark)
+                    .error(R.color.colorPrimaryDark)
+                    .load(mBackImage);
+        } else {
+            mBack.setBackgroundResource(R.color.colorPrimaryDark);
+        }
+        cursor.close();
     }
     /**
      * 设置整个的主题颜色
@@ -150,5 +186,24 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
+        {
 
+            if((System.currentTimeMillis()-exitTime) > 2000)  //System.currentTimeMillis()无论何时调用，肯定大于2000
+            {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            }
+            else
+            {
+                finish();
+                System.exit(0);
+            }
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -23,4 +23,7 @@
 
     <color name="hui">#999999</color>
 
+    <color name="green">#43C667</color>
+    <color name="dark_green">#369F52</color>
+
 </resources>

@@ -82,6 +82,11 @@ public class MultiDisplayActivity extends ActionBarActivity {
 
         initSwipeRefreshLayout();
         initRecyclerView();
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
         getDataViaDb();
 
     }

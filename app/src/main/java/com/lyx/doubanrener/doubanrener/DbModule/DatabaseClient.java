@@ -115,13 +115,13 @@ public class DatabaseClient implements DatabaseService {
     /**
      * select the last 10 record from table
      * */
-    public Cursor queryLastPage(String tableName) {
+    public Cursor queryLastPage(String tableName, String number) {
         Cursor cursor = null;
 
         SQLiteDatabase sqLiteDatabase = null;
         try {
             sqLiteDatabase = mDbOpenHelper.getReadableDatabase();
-            String sql = "select * from "+tableName+" order by id desc limit 10";
+            String sql = "select * from "+tableName+" order by id desc limit "+number;
             cursor = sqLiteDatabase.rawQuery(sql, null);
         } catch (Exception e) {
             e.printStackTrace();

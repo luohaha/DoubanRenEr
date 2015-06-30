@@ -84,7 +84,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         viewHolder.rating.setText(String.valueOf(mList.get(i).get("rating"))+" 分");
         Ion.with(viewHolder.imageView)
                 .placeholder(R.color.light)
-                .error(R.color.red)
+                .error(R.color.grey)
                 .load((String) mList.get(i).get("image"));
     }
 

@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +64,7 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
         mRecyclerViewDone.setHasFixedSize(true);
         mRecyclerViewDone.setLayoutManager(new FullyLinearLayoutManager(getActivity()));
 
-        getDataToUse();
         initSwipeRefreshLayout();
-        doFuck();
         return mView;
     }
 
@@ -79,6 +78,34 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
                 Intent intent = new Intent(getActivity(), MovieItemActivity.class);
                 intent.putExtra("movie_id", mList.get(postion).get("doubanid").toString());
                 startActivity(intent);
+            }
+        });
+        mAdapter.setOnItemLongClickListener(new DragAndDropAdapter.MyItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, final int postion) {
+                new MaterialDialog.Builder(getActivity())
+                        .title("标记喜欢")
+                        .content("是否要将 " + mList.get(postion).get("name") + " 移出电影计划?")
+                        .positiveText("是的")
+                        .negativeText("不了")
+                        .callback(new MaterialDialog.ButtonCallback(){
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                DatabaseClient databaseClient = new DatabaseClient(getActivity());
+                                databaseClient.deleteData("todopage", "doubanid=?", new String[]{mList.get(postion).get("doubanid").toString()});
+                                getDataToUse();
+                                doFuck();
+                                dialog.dismiss();
+                                Snackbar.make(mView, "已经移除成功~~", Snackbar.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onNegative(MaterialDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+
+
             }
         });
 
@@ -194,7 +221,7 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
             hashMap.put("doubanid", cursor.getString(cursor.getColumnIndex("doubanid")));
             mList.add(hashMap);
         }
-        cursor = databaseClient.queryLastPage("donepage");
+        cursor = databaseClient.queryLastPage("donepage", "8");
         while (cursor.moveToNext()) {
             HashMap<String, Object> hashMap = new HashMap<String, Object>();
             hashMap.put("name", cursor.getString(cursor.getColumnIndex("name")));
@@ -216,5 +243,12 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDataToUse();
+        doFuck();
     }
 }

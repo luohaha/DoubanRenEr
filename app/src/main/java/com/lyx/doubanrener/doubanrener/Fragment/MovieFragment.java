@@ -2,6 +2,7 @@ package com.lyx.doubanrener.doubanrener.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.BoxAdapter;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.SetLayoutData;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton;
@@ -117,6 +119,12 @@ public class MovieFragment extends Fragment{
     private ProgressBarCircular scienceRefreshProgress;
     private ProgressBarCircular actionRefreshProgress;
 
+    private TextView love_tag;
+    private TextView science_tag;
+    private TextView action_tag;
+
+    private String[] movie_tags = {"", "", ""};
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mView == null) {
@@ -125,6 +133,7 @@ public class MovieFragment extends Fragment{
         if (!isNetworkConnected(getActivity())) {
             Snackbar.make(mView, "当前无网络连接~~", Snackbar.LENGTH_LONG).show();
         }
+        getTagsFromDataBase();
         this.mInflater = inflater;
         initPregress();
         initFloatButton();
@@ -138,6 +147,19 @@ public class MovieFragment extends Fragment{
         return mView;
     }
 
+    /**
+     * get tags from database
+     * */
+    private void getTagsFromDataBase() {
+        DatabaseClient databaseClient = new DatabaseClient(getActivity());
+        Cursor cursor = databaseClient.queryData("tagspage", null, null);
+        while (cursor.moveToNext()) {
+            movie_tags[0] = cursor.getString(cursor.getColumnIndex("one"));
+            movie_tags[1] = cursor.getString(cursor.getColumnIndex("two"));
+            movie_tags[2] = cursor.getString(cursor.getColumnIndex("three"));
+        }
+        cursor.close();
+    }
     /**
      * init RecyclerView
      * */
@@ -172,7 +194,7 @@ public class MovieFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MovieActivity.class);
-                intent.putExtra("page", 6);
+                intent.putExtra("page", movie_tags[0]);
                 startActivity(intent);
             }
         });
@@ -182,7 +204,7 @@ public class MovieFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MovieActivity.class);
-                intent.putExtra("page", 7);
+                intent.putExtra("page", movie_tags[1]);
                 startActivity(intent);
             }
         });
@@ -192,7 +214,7 @@ public class MovieFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MovieActivity.class);
-                intent.putExtra("page", 4);
+                intent.putExtra("page", movie_tags[2]);
                 startActivity(intent);
             }
         });
@@ -205,7 +227,7 @@ public class MovieFragment extends Fragment{
                 mLoveMovieList = new ArrayList<HashMap<String, Object>>();
                 loveRefreshProgress.setVisibility(View.VISIBLE);
                 Random random = new Random();
-                getMovieDataViaHttp(random.nextInt(100), "爱情", mLoveMovieList, 1);
+                getMovieDataViaHttp(random.nextInt(100), movie_tags[0], mLoveMovieList, 1);
             }
         });
 
@@ -217,7 +239,7 @@ public class MovieFragment extends Fragment{
                 mScienceMovieList = new ArrayList<HashMap<String, Object>>();
                 scienceRefreshProgress.setVisibility(View.VISIBLE);
                 Random random = new Random();
-                getMovieDataViaHttp(random.nextInt(100), "科幻", mScienceMovieList, 2);
+                getMovieDataViaHttp(random.nextInt(100), movie_tags[1], mScienceMovieList, 2);
             }
         });
 
@@ -230,10 +252,17 @@ public class MovieFragment extends Fragment{
                 actionRefreshProgress.setVisibility(View.VISIBLE);
                 Random random = new Random();
 
-                getMovieDataViaHttp(random.nextInt(100), "动作", mActionMovieList, 3);
+                getMovieDataViaHttp(random.nextInt(100), movie_tags[2], mActionMovieList, 3);
 
             }
         });
+
+        love_tag = (TextView) mView.findViewById(R.id.love_tag_tv);
+        science_tag = (TextView) mView.findViewById(R.id.science_tag_tv);
+        action_tag = (TextView) mView.findViewById(R.id.action_tag_tv);
+        love_tag.setText(movie_tags[0]);
+        science_tag.setText(movie_tags[1]);
+        action_tag.setText(movie_tags[2]);
     }
     /**
      * 初始化浮动按键
@@ -246,6 +275,7 @@ public class MovieFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MovieActivity.class);
+                intent.putExtra("page", "top250");
                 startActivity(intent);
             }
         });
@@ -279,6 +309,10 @@ public class MovieFragment extends Fragment{
      * 网络加载
      */
     private void getDataViaHttp() {
+        love_tag.setText(movie_tags[0]);
+        science_tag.setText(movie_tags[1]);
+        action_tag.setText(movie_tags[2]);
+
         mList = new ArrayList<HashMap<String, Object>>();
         mLoveMovieList = new ArrayList<HashMap<String, Object>>();
         mActionMovieList = new ArrayList<HashMap<String, Object>>();
@@ -299,9 +333,9 @@ public class MovieFragment extends Fragment{
                 });
         Random random = new Random();
 
-        getMovieDataViaHttp(random.nextInt(100), "爱情", mLoveMovieList, 0);
-        getMovieDataViaHttp(random.nextInt(100), "科幻", mScienceMovieList, 0);
-        getMovieDataViaHttp(random.nextInt(100), "动作", mActionMovieList, 0);
+        getMovieDataViaHttp(random.nextInt(100), movie_tags[0], mLoveMovieList, 0);
+        getMovieDataViaHttp(random.nextInt(100), movie_tags[1], mScienceMovieList, 0);
+        getMovieDataViaHttp(random.nextInt(100), movie_tags[2], mActionMovieList, 0);
     }
 
     private void getMovieDataViaHttp(int begin, String tag, final ArrayList<HashMap<String, Object>> list, final int flag) {
@@ -519,4 +553,10 @@ public class MovieFragment extends Fragment{
         return false;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getTagsFromDataBase();
+
+    }
 }
