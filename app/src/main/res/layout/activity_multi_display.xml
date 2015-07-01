@@ -17,10 +17,7 @@
             app:title="分类"
             android:title="分类"
             android:background="?attr/colorPrimaryDark" />
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/activity_multi_display_swipe_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,12 +41,16 @@
                     android:typeface="monospace"
                     />
             </LinearLayout>
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/activity_multi_display_swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/activity_multi_display_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
+            </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
-        </android.support.v4.widget.SwipeRefreshLayout>
     </android.support.design.widget.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>

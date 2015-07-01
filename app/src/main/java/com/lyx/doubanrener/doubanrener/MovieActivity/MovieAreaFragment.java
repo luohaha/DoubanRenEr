@@ -116,12 +116,12 @@ public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemCl
      * */
     private void initFloatButton() {
         fab = (FloatingActionButton) mView.findViewById(R.id.movie_more_button);
-        fab.setDrawableIcon(getResources().getDrawable(R.drawable.plus));
+        fab.setDrawableIcon(getResources().getDrawable(R.drawable.ic_navigation_white_24dp));
         fab.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mRecyclerView.smoothScrollToPosition(0);
             }
         });
     }
