@@ -37,6 +37,8 @@ import java.util.HashMap;
 
 /**
  * Created by root on 15-6-21.
+ *
+ * 分类页面,每一个fragment对应一个分类
  */
 public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemClickListener{
 

@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 /**
  * Created by root on 15-6-21.
+ * 用于加载MovieAreaFragment
  */
 public class MovieActivity extends ActionBarActivity {
 

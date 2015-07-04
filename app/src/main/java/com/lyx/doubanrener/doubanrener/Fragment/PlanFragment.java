@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 /**
  * Created by root on 15-6-26.
+ * 主页面中 计划部分 fragment
  */
 public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStartDragListener{
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -45,6 +46,10 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
     private ItemTouchHelper.Callback mCallback;
 
     private View mView;
+    /**
+     * mList是计划中的电影的列表
+     * mListDone是已经完成的电影的列表
+     * */
     private ArrayList<HashMap<String, Object>> mList;
     private ArrayList<HashMap<String, Object>> mListDone;
 
@@ -68,7 +73,9 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
         return mView;
     }
 
-
+/**
+ * 实现点击，长按，左滑事件的注册
+ * */
     private void doFuck() {
         mAdapter = new DragAndDropAdapter(this, mList, getActivity(), mView);
         mRecyclerView.setAdapter(mAdapter);
