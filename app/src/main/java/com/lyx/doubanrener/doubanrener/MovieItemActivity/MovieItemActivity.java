@@ -40,6 +40,8 @@ import java.util.HashMap;
  * Created by root on 15-6-21.
  */
 public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAdapter.MyItemClickListener{
+    public static final String LISTVIEW_REFRESH_ACTION= "com.doubanrener.test.LISTVIEW_REFRESH_ACTION";
+
     private static int REFRESH_FINISH = 1;
 
     private ProgressBarCircular progressBarCircular;
@@ -121,6 +123,14 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
                         values.put("doubanid", mMovieId);
                         values.put("image", imageView_data);
                         databaseClient.insertData("todopage", values);
+                        /**
+                        * 广播通知widget
+                        * */
+                        Intent widget_intent = new Intent().setAction(LISTVIEW_REFRESH_ACTION);
+                        MovieItemActivity.this.sendBroadcast(widget_intent);
+                        /**
+                         * done !
+                         * */
                         Toast.makeText(getApplicationContext(), "加入电影计划~~", Toast.LENGTH_SHORT).show();
                         mFloatingActionButton.setImageResource(R.drawable.ic_bookmark_white_24dp);
                         mFloatingActionButton.setOnClickListener(null);

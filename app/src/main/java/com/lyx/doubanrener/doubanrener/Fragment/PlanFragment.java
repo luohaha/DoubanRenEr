@@ -34,6 +34,8 @@ import java.util.HashMap;
  * 主页面中 计划部分 fragment
  */
 public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStartDragListener{
+    public static final String LISTVIEW_REFRESH_ACTION= "com.doubanrener.test.LISTVIEW_REFRESH_ACTION";
+
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -91,7 +93,7 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
             @Override
             public void onItemLongClick(View view, final int postion) {
                 new MaterialDialog.Builder(getActivity())
-                        .title("标记喜欢")
+                        .title("移出电影计划")
                         .content("是否要将 " + mList.get(postion).get("name") + " 移出电影计划?")
                         .positiveText("是的")
                         .negativeText("不了")
@@ -104,6 +106,11 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
                                 doFuck();
                                 dialog.dismiss();
                                 Snackbar.make(mView, "已经移除成功~~", Snackbar.LENGTH_LONG).show();
+                                /**
+                                 * 广播通知widget
+                                 * */
+                                Intent widget_intent = new Intent().setAction(LISTVIEW_REFRESH_ACTION);
+                                getActivity().sendBroadcast(widget_intent);
                             }
 
                             @Override

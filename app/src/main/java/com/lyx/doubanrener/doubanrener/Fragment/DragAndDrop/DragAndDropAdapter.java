@@ -2,6 +2,7 @@ package com.lyx.doubanrener.doubanrener.Fragment.DragAndDrop;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
@@ -35,6 +36,8 @@ import java.util.List;
  */
 public class DragAndDropAdapter extends RecyclerView.Adapter<DragAndDropAdapter.ItemViewHolder>
         implements ItemTouchHelperAdapter {
+
+    public static final String LISTVIEW_REFRESH_ACTION= "com.doubanrener.test.LISTVIEW_REFRESH_ACTION";
 
     private ArrayList<HashMap<String, Object>> mList;
     private Context mContext;
@@ -136,11 +139,20 @@ public class DragAndDropAdapter extends RecyclerView.Adapter<DragAndDropAdapter.
         values.put("name", mList.get(position).get("name").toString());
         values.put("islove", "no");
         databaseClient.insertData("donepage", values);
+
+        /**
+         * done !
+         * */
         Snackbar.make(mView, "已经观看 : "+mList.get(position).get("name").toString(), Snackbar.LENGTH_LONG)
                 .show();
         mList.remove(position);
         notifyItemRemoved(position);
 
+        /**
+         * 广播通知widget
+         * */
+        Intent widget_intent = new Intent().setAction(LISTVIEW_REFRESH_ACTION);
+        mContext.sendBroadcast(widget_intent);
     }
     @Override
     public void onItemMove(int fromPosition, int toPosition) {

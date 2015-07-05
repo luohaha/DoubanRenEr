@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/card_back"
+        >
+        <ImageView
+            android:id="@+id/widget_tag"
+            android:layout_alignParentLeft="true"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_launcher"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_toRightOf="@+id/widget_tag"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textColor="@color/grey"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:text="电影的计划"/>
+        <ImageView
+            android:id="@+id/widget_plus"
+            android:clickable="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/ic_add_black_24dp"/>
+        </RelativeLayout>
+
+    <ListView
+        android:layout_height = "wrap_content"
+        android:layout_width = "match_parent"
+        android:background="@color/white"
+        android:id = "@+id/widget_listview"
+        />
+
+
+</LinearLayout>

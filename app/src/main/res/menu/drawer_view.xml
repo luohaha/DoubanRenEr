@@ -5,30 +5,25 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_records"
-            android:icon="@drawable/ic_visibility_white_24dp"
+            android:icon="@drawable/ic_visibility_black_24dp"
             android:title="观看记录"/>
         <item
             android:id="@+id/nav_peoples"
-            android:icon="@drawable/ic_people_white_24dp"
+            android:icon="@drawable/ic_people_black_24dp"
             android:title="喜欢的影人"/>
         <item
             android:id="@+id/nav_movies"
-            android:icon="@drawable/ic_theaters_white_24dp"
+            android:icon="@drawable/ic_theaters_black_24dp"
             android:title="喜欢的电影"/>
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings_applications_black_24dp"
+            android:title="设置"/>
+        <item
+            android:id="@+id/nav_version"
+            android:icon="@drawable/ic_perm_device_info_black_24dp"
+            android:title="版本介绍"/>
 
     </group>
-
-    <item android:title="设置">
-        <menu>
-            <item
-                android:id="@+id/nav_setting"
-                android:icon="@drawable/ic_settings_applications_white_24dp"
-                android:title="设置页面"/>
-            <item
-                android:id="@+id/nav_version"
-                android:icon="@drawable/ic_perm_device_info_white_24dp"
-                android:title="版本介绍"/>
-        </menu>
-    </item>
 
 </menu>
