@@ -7,8 +7,10 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -27,8 +29,7 @@ import java.util.HashMap;
 public class AppWidget extends AppWidgetProvider {
 
 
-    public static final String PLUS_ACTION = "com.doubanrener.test.PLUS_ACTION";
-    public static final String LISTVIEW_ITEM_ACTION = "com.doubanrener.test.LISTVIEW_ITEM_ACTION";
+
 
     public static final String LISTVIEW_REFRESH_ACTION= "com.doubanrener.test.LISTVIEW_REFRESH_ACTION";
 
@@ -63,15 +64,16 @@ public class AppWidget extends AppWidgetProvider {
             /**
              * 设置响应 “按钮(plus)” 的intent
              * */
-            Intent intent_plus = new Intent().setAction(PLUS_ACTION);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent_plus, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Intent intent_plus = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent_plus, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setOnClickPendingIntent(R.id.widget_plus, pendingIntent);
             /**
              * 设置响应 “listView” 的intent模板
              * */
-            Intent intent_listview_item = new Intent().setAction(LISTVIEW_ITEM_ACTION);
+            Intent intent_listview_item = new Intent(context, HamdlerService.class);
             intent_listview_item.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            PendingIntent pendingIntent_listview_item = PendingIntent.getBroadcast(context, 0, intent_listview_item, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent_listview_item = PendingIntent.getService(context, 0, intent_listview_item, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setPendingIntentTemplate(R.id.widget_listview, pendingIntent_listview_item);
 
 
@@ -83,49 +85,18 @@ public class AppWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
         String action = intent.getAction();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName cmpName = new ComponentName(context, AppWidget.class);
 
-
-        if (action.equals(PLUS_ACTION)) {
-            Intent intent1 = new Intent(context, MainActivity.class);
-            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent1);
-        } else if (action.equals(LISTVIEW_ITEM_ACTION)) {
-            String type = intent.getStringExtra("type");
-            String movieid = intent.getStringExtra("movie_id");
-            if (type.equals("textview")) {
-                Intent intent1 = new Intent(context, MovieItemActivity.class);
-                intent1.putExtra("movie_id", movieid);
-                intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent1);
-
-            } else if (type.equals("imageview")) {
-                String image = intent.getStringExtra("image");
-                String name = intent.getStringExtra("name");
-                DatabaseClient databaseClient = new DatabaseClient(context);
-                databaseClient.deleteData("todopage", "doubanid=?", new String[]{movieid});
-                /**
-                 * insert done page
-                 * */
-                ContentValues values = new ContentValues();
-
-                values.put("image", image);
-                values.put("doubanid", movieid);
-                values.put("name", name);
-                values.put("islove", "no");
-                databaseClient.insertData("donepage", values);
-
-                int[] appIds = appWidgetManager.getAppWidgetIds(cmpName);
-                appWidgetManager.notifyAppWidgetViewDataChanged(appIds, R.id.widget_listview);
-
-                Toast.makeText(context, "你已经观看 "+name+ " 啦!", Toast.LENGTH_SHORT).show();
-            }
-        } else if (action.equals(LISTVIEW_REFRESH_ACTION)) {
+       if (action.equals(LISTVIEW_REFRESH_ACTION)) {
             int[] appIds = appWidgetManager.getAppWidgetIds(cmpName);
             appWidgetManager.notifyAppWidgetViewDataChanged(appIds, R.id.widget_listview);
         }
-        super.onReceive(context, intent);
     }
+
+
+
 }
