@@ -17,8 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -122,6 +120,7 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
                         values.put("doubanid", mPeopleId);
                         values.put("image", imageView_data);
                         databaseClient.insertData("lovepeoplepage", values);
+
                         Toast.makeText(getApplicationContext(), "加入喜欢列表~~", Toast.LENGTH_SHORT).show();
                         mFloatingActionButton.setImageResource(R.drawable.ic_favorite_white_24dp);
                         mFloatingActionButton.setOnClickListener(null);

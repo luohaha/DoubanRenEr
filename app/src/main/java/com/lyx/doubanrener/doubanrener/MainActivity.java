@@ -23,14 +23,17 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.Fragment.ViewPagerAdapter;
+import com.lyx.doubanrener.doubanrener.MaterialDesign.RoundImageView;
 import com.lyx.doubanrener.doubanrener.MultiDisplayActivity.MultiDisplayActivity;
 import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
 import com.lyx.doubanrener.doubanrener.SettingActivity.SettingActivity;
@@ -42,7 +45,15 @@ public class MainActivity extends AppCompatActivity {
     private long exitTime;
 
     private ImageView mBack;
+    /**
+     * user
+     * */
+    private RoundImageView mUserHeadImage;
+    private TextView mUserName;
+
     private String mBackImage;
+    private String mUserImage;
+
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView mNavigationView;
@@ -52,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     TabLayout slidingTabLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
 
         }
+
         /**
          * 获取viewpager,和tabs的布局
          * */
@@ -137,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
     }
+
+
     /**
      * 设置整个的主题颜色
      * */

@@ -86,22 +86,54 @@ activity#com.lyx.doubanrener.doubanrener.SettingActivity.VersionActivity
 ADDED from AndroidManifest.xml:42:9
 	android:name
 		ADDED from AndroidManifest.xml:42:19
+receiver#com.lyx.doubanrener.doubanrener.Widget.AppWidget
+ADDED from AndroidManifest.xml:45:9
+	android:name
+		ADDED from AndroidManifest.xml:45:19
+intent-filter#android.appwidget.action.APPWIDGET_UPDATE+com.doubanrener.test.LISTVIEW_REFRESH_ACTION
+ADDED from AndroidManifest.xml:46:13
+action#android.appwidget.action.APPWIDGET_UPDATE
+ADDED from AndroidManifest.xml:47:17
+	android:name
+		ADDED from AndroidManifest.xml:47:25
+action#com.doubanrener.test.LISTVIEW_REFRESH_ACTION
+ADDED from AndroidManifest.xml:50:17
+	android:name
+		ADDED from AndroidManifest.xml:50:25
+meta-data#android.appwidget.provider
+ADDED from AndroidManifest.xml:53:13
+	android:resource
+		ADDED from AndroidManifest.xml:53:66
+	android:name
+		ADDED from AndroidManifest.xml:53:24
+service#com.lyx.doubanrener.doubanrener.Widget.WidgetService
+ADDED from AndroidManifest.xml:55:9
+	android:exported
+		ADDED from AndroidManifest.xml:57:13
+	android:permission
+		ADDED from AndroidManifest.xml:58:13
+	android:name
+		ADDED from AndroidManifest.xml:56:13
+service#com.lyx.doubanrener.doubanrener.Widget.HamdlerService
+ADDED from AndroidManifest.xml:60:9
+	android:name
+		ADDED from AndroidManifest.xml:60:18
 uses-permission#android.permission.INTERNET
-ADDED from AndroidManifest.xml:46:5
+ADDED from AndroidManifest.xml:64:5
 	android:name
-		ADDED from AndroidManifest.xml:46:22
+		ADDED from AndroidManifest.xml:64:22
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from AndroidManifest.xml:47:5
+ADDED from AndroidManifest.xml:65:5
 	android:name
-		ADDED from AndroidManifest.xml:47:22
+		ADDED from AndroidManifest.xml:65:22
 uses-permission#android.permission.MOUNT_UNMOUNT_FILESYSTEMS
-ADDED from AndroidManifest.xml:48:5
+ADDED from AndroidManifest.xml:66:5
 	android:name
-		ADDED from AndroidManifest.xml:48:22
+		ADDED from AndroidManifest.xml:66:22
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from AndroidManifest.xml:49:5
+ADDED from AndroidManifest.xml:67:5
 	android:name
-		ADDED from AndroidManifest.xml:49:22
+		ADDED from AndroidManifest.xml:67:22
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:appcompat-v7:22.2.0:20:5

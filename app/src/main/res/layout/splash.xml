@@ -18,10 +18,10 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textStyle="italic"
         android:gravity="center"
-        android:textColor="@color/dark_green"
-        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:text="定制你自己的观影计划"
         android:typeface="serif"/>
 </RelativeLayout>

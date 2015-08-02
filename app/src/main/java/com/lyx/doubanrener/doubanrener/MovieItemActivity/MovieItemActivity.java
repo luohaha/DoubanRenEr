@@ -22,8 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -57,6 +55,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
     private NestedScrollView mNestedScrollView;
 
     private FloatingActionButton mFloatingActionButton;
+
 
     private String mItemUrl = "http://api.douban.com/v2/movie/subject/";
     private String mMovieId;
@@ -106,6 +105,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
      * */
     private void initFloatingActionButton() {
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.activity_movie_item_float_button);
+
         DatabaseClient databaseClient = new DatabaseClient(MovieItemActivity.this);
         Cursor cursor = databaseClient.queryData("todopage", "doubanid=?", new String[]{mMovieId});
         if (cursor == null || cursor.getCount() == 0) {
