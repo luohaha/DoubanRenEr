@@ -156,6 +156,7 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(0, R.anim.slide_bottom_out);
             }
         });
     }
@@ -349,5 +350,13 @@ public class MovieItemActivity extends AppCompatActivity implements PeopleFaceAd
         Intent intent = new Intent(MovieItemActivity.this, MoviePeopleActivity.class);
         intent.putExtra("people_id", mList.get(postion).get("people_id").toString());
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        overridePendingTransition(0, R.anim.slide_bottom_out);
     }
 }

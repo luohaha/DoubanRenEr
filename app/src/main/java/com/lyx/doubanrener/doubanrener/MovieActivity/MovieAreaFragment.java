@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -108,9 +110,14 @@ public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemCl
 
     @Override
     public void onItemClick(View view, int postion) {
+        //让新的Activity从一个小的范围扩大到全屏
+        ActivityOptionsCompat options =
+                ActivityOptionsCompat.makeScaleUpAnimation(view, //The View that the new activity is animating from
+                        (int)view.getWidth()/2, (int)view.getHeight()/2, //拉伸开始的坐标
+                        0, 0);//拉伸开始的区域大小，这里用（0，0）表示从无到全屏
         Intent intent = new Intent(getActivity(), MovieItemActivity.class);
         intent.putExtra("movie_id", mList.get(postion).get("movie_id").toString());
-        startActivity(intent);
+        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
     }
 
     /**

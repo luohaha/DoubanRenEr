@@ -147,6 +147,7 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(0, R.anim.slide_bottom_out);
             }
         });
     }
@@ -289,6 +290,13 @@ public class MoviePeopleActivity extends AppCompatActivity implements MovieFaceA
         Intent intent = new Intent(MoviePeopleActivity.this, MovieItemActivity.class);
         intent.putExtra("movie_id", mList.get(postion).get("movie_id").toString());
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        overridePendingTransition(0, R.anim.slide_bottom_out);
     }
 
 }

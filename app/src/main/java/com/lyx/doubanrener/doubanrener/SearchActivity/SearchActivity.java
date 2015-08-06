@@ -205,6 +205,7 @@ public class SearchActivity extends ActionBarActivity {
                 Intent intent = new Intent(SearchActivity.this, MovieItemActivity.class);
                 intent.putExtra("movie_id", mList.get(postion).get("id").toString());
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
     }
@@ -244,4 +245,10 @@ public class SearchActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        overridePendingTransition(0, R.anim.slide_bottom_out);
+    }
 }

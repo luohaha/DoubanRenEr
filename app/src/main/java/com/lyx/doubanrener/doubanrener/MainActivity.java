@@ -105,24 +105,29 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, MultiDisplayActivity.class);
                         intent.putExtra("type", "movies");
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                         break;
                     case R.id.nav_peoples:
                         Intent intent2 = new Intent(MainActivity.this, MultiDisplayActivity.class);
                         intent2.putExtra("type", "peoples");
                         startActivity(intent2);
+                        overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                         break;
                     case R.id.nav_records:
                         Intent intent3 = new Intent(MainActivity.this, MultiDisplayActivity.class);
                         intent3.putExtra("type", "records");
                         startActivity(intent3);
+                        overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                         break;
                     case R.id.nav_setting:
                         Intent intent4 = new Intent(MainActivity.this, SettingActivity.class);
                         startActivity(intent4);
+                        overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                         break;
                     case R.id.nav_version:
                         Intent intent5 = new Intent(MainActivity.this, VersionActivity.class);
                         startActivity(intent5);
+                        overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                         break;
                 }
                 return true;
@@ -182,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_search:
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                 return true;
         }
 

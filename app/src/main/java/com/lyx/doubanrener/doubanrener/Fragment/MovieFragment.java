@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -196,6 +198,7 @@ public class MovieFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), MovieActivity.class);
                 intent.putExtra("page", movie_tags[0]);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
         scienceButton = (LayoutRipple)mView.findViewById(R.id.science_button);
@@ -203,9 +206,11 @@ public class MovieFragment extends Fragment{
         scienceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(), MovieActivity.class);
                 intent.putExtra("page", movie_tags[1]);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
         actionButton = (LayoutRipple)mView.findViewById(R.id.action_button);
@@ -213,9 +218,11 @@ public class MovieFragment extends Fragment{
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(), MovieActivity.class);
                 intent.putExtra("page", movie_tags[2]);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
 
@@ -277,6 +284,7 @@ public class MovieFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), MovieActivity.class);
                 intent.putExtra("page", "top250");
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
     }
@@ -401,6 +409,7 @@ public class MovieFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), MovieItemActivity.class);
                 intent.putExtra("movie_id", mList.get(postion).get("id").toString());
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
 

@@ -1,5 +1,6 @@
 package com.lyx.doubanrener.doubanrener.Fragment.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -39,6 +40,8 @@ public class SetItemData {
                 Intent intent = new Intent(mContext, MovieItemActivity.class);
                 intent.putExtra("movie_id", hashMap.get("id").toString());
                 mContext.startActivity(intent);
+                Activity activity = (Activity) mContext;
+                activity.overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
         TextView name = (TextView) mView.findViewById(R.id.love_item_name);

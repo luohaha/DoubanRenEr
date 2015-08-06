@@ -31,6 +31,7 @@ public class VersionActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     finish();
+                    overridePendingTransition(0, R.anim.slide_bottom_out);
                 }
             });
             toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
@@ -43,5 +44,11 @@ public class VersionActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.activity_version_textview);
         textView.setText("当前版本的主要功能有：\n1.电影信息查看，影人信息查看\n2.观影计划制定"+
                 "\n预计在下一版本推出在线播放的功能,让体验更人性化!\n谢谢支持！");
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        overridePendingTransition(0, R.anim.slide_bottom_out);
     }
 }

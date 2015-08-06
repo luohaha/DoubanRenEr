@@ -58,6 +58,7 @@ public class SettingActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
                     finish();
+                    overridePendingTransition(0, R.anim.slide_bottom_out);
                 }
             });
             toolbar.setTitle("设置");
@@ -312,5 +313,10 @@ public class SettingActivity extends AppCompatActivity{
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        overridePendingTransition(0, R.anim.slide_bottom_out);
+    }
 }

@@ -57,6 +57,7 @@ public class MovieActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     finish();
+                    overridePendingTransition(0, R.anim.slide_bottom_out);
                 }
             });
             toolbar.setTitle("分类");
@@ -117,9 +118,17 @@ public class MovieActivity extends ActionBarActivity {
             case R.id.action_search:
                 Intent intent = new Intent(MovieActivity.this, SearchActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        overridePendingTransition(0, R.anim.slide_bottom_out);
     }
 }

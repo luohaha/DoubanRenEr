@@ -69,6 +69,7 @@ public class MultiDisplayActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     finish();
+                    overridePendingTransition(0, R.anim.slide_bottom_out);
                 }
             });
         }
@@ -114,6 +115,7 @@ public class MultiDisplayActivity extends ActionBarActivity {
             case R.id.action_search:
                 Intent intent = new Intent(MultiDisplayActivity.this, SearchActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                 return true;
         }
 
@@ -151,6 +153,7 @@ public class MultiDisplayActivity extends ActionBarActivity {
                     Intent intent = new Intent(MultiDisplayActivity.this, MovieItemActivity.class);
                     intent.putExtra("movie_id", mList.get(postion).get("doubanid").toString());
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                 }
             });
             mAdapter.setOnItemLongClickListener(new NoDragAdapter.MyItemLongClickListener() {
@@ -205,6 +208,7 @@ public class MultiDisplayActivity extends ActionBarActivity {
                     Intent intent = new Intent(MultiDisplayActivity.this, MoviePeopleActivity.class);
                     intent.putExtra("people_id", mList.get(postion).get("doubanid").toString());
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                 }
             });
             mAdapter.setOnItemLongClickListener(new NoDragAdapter.MyItemLongClickListener() {
@@ -257,6 +261,7 @@ public class MultiDisplayActivity extends ActionBarActivity {
                     Intent intent = new Intent(MultiDisplayActivity.this, MovieItemActivity.class);
                     intent.putExtra("movie_id", mList.get(postion).get("doubanid").toString());
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
                 }
             });
             mAdapter.setOnItemLongClickListener(new NoDragAdapter.MyItemLongClickListener() {
@@ -332,5 +337,12 @@ public class MultiDisplayActivity extends ActionBarActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        overridePendingTransition(0, R.anim.slide_bottom_out);
     }
  }

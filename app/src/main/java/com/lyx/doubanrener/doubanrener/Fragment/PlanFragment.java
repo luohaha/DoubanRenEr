@@ -87,6 +87,7 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
                 Intent intent = new Intent(getActivity(), MovieItemActivity.class);
                 intent.putExtra("movie_id", mList.get(postion).get("doubanid").toString());
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
         mAdapter.setOnItemLongClickListener(new DragAndDropAdapter.MyItemLongClickListener() {
@@ -156,6 +157,7 @@ public class PlanFragment extends Fragment implements DragAndDropAdapter.OnStart
                 Intent intent = new Intent(getActivity(), MovieItemActivity.class);
                 intent.putExtra("movie_id", mListDone.get(postion).get("doubanid").toString());
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_bottom_in, android.R.anim.fade_out);
             }
         });
         mNoDragAdapter.setOnItemLongClickListener(new NoDragAdapter.MyItemLongClickListener() {
