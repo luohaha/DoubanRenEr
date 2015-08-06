@@ -1,31 +1,26 @@
 package com.lyx.doubanrener.doubanrener;
 
-import android.content.ContentValues;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
+
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +28,7 @@ import android.widget.Toast;
 import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.Fragment.ViewPagerAdapter;
+import com.lyx.doubanrener.doubanrener.MaterialDesign.LollipopUtils;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.RoundImageView;
 import com.lyx.doubanrener.doubanrener.MultiDisplayActivity.MultiDisplayActivity;
 import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
@@ -63,12 +59,14 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     TabLayout slidingTabLayout;
+    private AppBarLayout mToolbarHolder;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         /**
          * drawerlayout 整个的头布局
          * drawerlist 左侧抽屉列表
@@ -83,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
 
         }
-
+        mToolbarHolder = (AppBarLayout) findViewById(R.id.toolbar_holder);
+        LollipopUtils.setStatusbarColor(this, mToolbarHolder);
         /**
          * 获取viewpager,和tabs的布局
          * */

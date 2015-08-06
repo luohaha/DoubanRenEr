@@ -1,10 +1,13 @@
 package com.lyx.doubanrener.doubanrener.SettingActivity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.lyx.doubanrener.doubanrener.MaterialDesign.RoundImageView;
@@ -51,4 +54,5 @@ public class VersionActivity extends AppCompatActivity {
         //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
         overridePendingTransition(0, R.anim.slide_bottom_out);
     }
+
 }

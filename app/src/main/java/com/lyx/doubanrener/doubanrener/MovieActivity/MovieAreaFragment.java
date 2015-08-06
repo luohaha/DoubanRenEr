@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -25,15 +26,11 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.MovieAdapter;
-import com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
 import com.lyx.doubanrener.doubanrener.MovieItemActivity.MovieItemActivity;
 import com.lyx.doubanrener.doubanrener.R;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -125,8 +122,7 @@ public class MovieAreaFragment extends Fragment implements MovieAdapter.MyItemCl
      * */
     private void initFloatButton() {
         fab = (FloatingActionButton) mView.findViewById(R.id.movie_more_button);
-        fab.setDrawableIcon(getResources().getDrawable(R.drawable.ic_navigation_white_24dp));
-        fab.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+        //fab.setDrawableIcon(getResources().getDrawable(R.drawable.ic_navigation_white_24dp));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

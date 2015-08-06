@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -31,7 +32,6 @@ import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.BoxAdapter;
 import com.lyx.doubanrener.doubanrener.Fragment.Adapters.SetLayoutData;
-import com.lyx.doubanrener.doubanrener.MaterialDesign.FloatingActionButton;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.Other.LayoutRipple;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.ProgressBarCircular;
 import com.lyx.doubanrener.doubanrener.MovieActivity.MovieActivity;
@@ -276,8 +276,6 @@ public class MovieFragment extends Fragment{
      * */
     private void initFloatButton() {
         fab = (FloatingActionButton) mView.findViewById(R.id.movie_more_button);
-        fab.setDrawableIcon(getResources().getDrawable(R.drawable.plus));
-        fab.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

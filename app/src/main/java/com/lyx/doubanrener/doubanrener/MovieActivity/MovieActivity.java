@@ -1,22 +1,28 @@
 package com.lyx.doubanrener.doubanrener.MovieActivity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
+
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
+import com.lyx.doubanrener.doubanrener.MaterialDesign.LollipopUtils;
 import com.lyx.doubanrener.doubanrener.R;
 import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
 
@@ -26,7 +32,7 @@ import java.util.HashMap;
  * Created by root on 15-6-21.
  * 用于加载MovieAreaFragment
  */
-public class MovieActivity extends ActionBarActivity {
+public class MovieActivity extends AppCompatActivity {
 
     ViewPager pager;
     private String titles[] = new String[]{"top250", "热门", "华语",
@@ -37,7 +43,7 @@ public class MovieActivity extends ActionBarActivity {
 
     private HashMap<String, Integer> MoviehashMap;
 
-
+    private AppBarLayout mToolbarHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,10 @@ public class MovieActivity extends ActionBarActivity {
             });
             toolbar.setTitle("分类");
         }
+
+        mToolbarHolder = (AppBarLayout) findViewById(R.id.toolbar_holder);
+        LollipopUtils.setStatusbarColor(this, mToolbarHolder);
+
         initHashMap();
         /**
          * 获取viewpager,和tabs的布局
@@ -131,4 +141,5 @@ public class MovieActivity extends ActionBarActivity {
         //overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
         overridePendingTransition(0, R.anim.slide_bottom_out);
     }
+
 }

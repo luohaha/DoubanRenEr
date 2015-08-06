@@ -2,7 +2,7 @@
 <resources>
     <color name="card_back">#EEEEEE</color>
     <color name="white">#FFFFFF</color>
-    <color name="red">#bf360c</color>
+    <color name="red">#FF0000</color>
     <color name="ripple_red">#ffbf5232</color>
 
     <color name="material_teal">@color/material_deep_teal_500</color>
@@ -25,5 +25,8 @@
 
     <color name="green">#43C667</color>
     <color name="dark_green">#369F52</color>
+    
+    <color name="yellow">#FFFF00</color>
+    <color name="ripple_yellow">#FE9A2E</color>
 
 </resources>
