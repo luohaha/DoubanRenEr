@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -40,6 +41,7 @@ public class VersionActivity extends AppCompatActivity {
             toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
             toolbar.setTitle("版本说明");
         }
+
         title = (TextView) findViewById(R.id.activity_version_title);
         title.setText("来自 计划电影 的说明");
         imageview = (RoundImageView) findViewById(R.id.activity_version_imageview);

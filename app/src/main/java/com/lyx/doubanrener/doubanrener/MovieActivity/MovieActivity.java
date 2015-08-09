@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.lyx.doubanrener.doubanrener.MaterialDesign.LollipopUtils;
 import com.lyx.doubanrener.doubanrener.R;
 import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
 
@@ -42,8 +41,6 @@ public class MovieActivity extends AppCompatActivity {
     TabLayout slidingTabLayout;
 
     private HashMap<String, Integer> MoviehashMap;
-
-    private AppBarLayout mToolbarHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +66,6 @@ public class MovieActivity extends AppCompatActivity {
             toolbar.setTitle("分类");
         }
 
-        mToolbarHolder = (AppBarLayout) findViewById(R.id.toolbar_holder);
-        LollipopUtils.setStatusbarColor(this, mToolbarHolder);
 
         initHashMap();
         /**

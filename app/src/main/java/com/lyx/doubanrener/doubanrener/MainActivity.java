@@ -28,7 +28,6 @@ import android.widget.Toast;
 import com.koushikdutta.ion.Ion;
 import com.lyx.doubanrener.doubanrener.DbModule.DatabaseClient;
 import com.lyx.doubanrener.doubanrener.Fragment.ViewPagerAdapter;
-import com.lyx.doubanrener.doubanrener.MaterialDesign.LollipopUtils;
 import com.lyx.doubanrener.doubanrener.MaterialDesign.RoundImageView;
 import com.lyx.doubanrener.doubanrener.MultiDisplayActivity.MultiDisplayActivity;
 import com.lyx.doubanrener.doubanrener.SearchActivity.SearchActivity;
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     TabLayout slidingTabLayout;
-    private AppBarLayout mToolbarHolder;
 
 
     @Override
@@ -81,8 +79,6 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
 
         }
-        mToolbarHolder = (AppBarLayout) findViewById(R.id.toolbar_holder);
-        LollipopUtils.setStatusbarColor(this, mToolbarHolder);
         /**
          * 获取viewpager,和tabs的布局
          * */
